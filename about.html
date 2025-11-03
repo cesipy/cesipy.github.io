@@ -3,33 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>about me</title>
+    <title>Cesipy's Corner</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <link rel="stylesheet" href="./styles.css">
 </head>
 
 <body>
   <header>
-    <h1>cesipy's corner</h1>
+    <img src="./assets/cesipis_corner_white_gb.png" alt="Cesipy's Corner Logo" class="logo-light" style="max-width: 350px; width: 100%;">
+    <img src="./assets/cesipis_corner_black_bg.png" alt="Cesipy's Corner Logo" class="logo-dark" style="max-width: 350px; width: 100%;">
     <p>Thoughts, notes, and experiments.</p>
     <nav>
       <a href="index.html">Home</a>
-      <a href="about.html">About me</a>
     </nav>
     <hr>
   </header>
 
-  <main>
-    <img src="./posts/res/pb2_downscaled.jpeg" style="max-width:150px;  display:block; margin-bottom:1em;">
-    <p>
+<main>
+  <div class="profile-container">
+    <img src="./posts/res/pb2_downscaled.jpeg" class="profile-img" alt="Cedric Sillaber">
+    <div class="intro">
+      <p>
         hello, i'm cedric, a computer science student from Innsbruck, Austria. currently i'm working on my bachelor thesis, where i analyze representational alignment in encoder-only transformers.
-    </p>
+      </p>
+
+    </div>
+  </div>
+
+
+  <div class="intro">
+
     <p>
-    i like reading (check out my <a href="https://www.goodreads.com/user/show/147956107-cedric">goodreads</a>), sports (hiking and cycling) as well as ml/dl.
+      i like reading (check out my <a href="https://www.goodreads.com/user/show/147956107-cedric">goodreads</a>), sports (hiking and cycling) as well as ml/dl.
     </p>
-  </main>
+
+    <p>
+      you can checkout the following links if you want to learn more about me:
+    </p>
+    <ul>
+      <li><a href="./assets/cv_public.pdf">my cv</a></li>
+      <li><a href="https://github.com/cesipy">my github</a></li>
+      <li><a href="https://www.linkedin.com/in/cedric-immanuel-sillaber-774b6926b/">my linkedin</a></li>
+    </ul>
+  </div>
+</main>
 
   <footer>
-
     <p>© 2025 Cedric Sillaber</p>
   </footer>
 
