@@ -57,8 +57,8 @@
     <span class="math inline">\(L\)</span>, to see how you can improve
     the network.</p>
     <p>The core idea is that this can be calculated using the chain
-    rule, which comes in handy. To revisit the chain rule: <span
-    class="math display">\[
+    rule, which comes in handy. To revisit the chain rule:</p>
+    <p><span class="math display">\[
         g(f(x))&#39; = g&#39;(f(x)) \cdot f&#39;(x)
     \]</span></p>
     <p>The objective for our statistical model <span
@@ -248,15 +248,17 @@
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;epochs </span><span class="sc">{</span>epoch<span class="sc">}</span><span class="ss">, avg_loss: </span><span class="sc">{</span>avg_loss<span class="sc">}</span><span class="ss">, individual_loss: </span><span class="sc">{</span>loss<span class="sc">.</span>item()<span class="sc">}</span><span class="ss">&quot;</span>)</span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span></code></pre></div>
-    <p>The plot below shows a cool thing:
-    <img src="/posts/res/2025-11-13-13-27-49.png" width=300 > We are not
-    overfitting, but really decreasing the overall loss. This indicates
-    that one sample here is already helping to generalize, but has only
-    limited information for the whole dataset. individual loss decreases
-    and therefore also decreases overall loss. but when this is fitted,
-    there is no more information to gain from this sample and the
-    overall loss stagnates. Here the avg loss is aroung 26, while the
-    individual loss is at 2.6</p>
+    <p>The plot below shows a cool thing:</p>
+    <figure>
+    <img src="/posts/res/2025-11-13-13-27-49.png" width=300 >
+    </figure>
+    <p>We are not overfitting, but really decreasing the overall loss.
+    This indicates that one sample here is already helping to
+    generalize, but has only limited information for the whole dataset.
+    individual loss decreases and therefore also decreases overall loss.
+    but when this is fitted, there is no more information to gain from
+    this sample and the overall loss stagnates. Here the avg loss is
+    aroung 26, while the individual loss is at 2.6</p>
     <p>In the next step the gradient is accumulated for the whole
     dataset and then updated using standard gradient descent.</p>
     <div class="sourceCode" id="cb8"><pre
@@ -283,20 +285,24 @@
 <span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    avg_loss <span class="op">=</span> evaluate_over_dataset(dps, w)</span>
 <span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    train_over_dataset(dps, w)</span></code></pre></div>
-    <p>Here all the operations are accumulated to a large computational
+    Here all the operations are accumulated to a large computational
     graph. Calling the final <code>loss.backward()</code>, the gradient
     is calculated for all operations. This converges to a lower avg loss
     of around 5 after 25 epochs.
-    <img src="/posts/res/2025-11-25-11-05-52.png" width=300 ></p>
+    <figure>
+    <img src="/posts/res/2025-11-25-11-05-52.png" width=300 >
+    </figure>
     <p>of course we are not able to completely fit the data with only
     two weights, as the function includes a quadratic term.</p>
     <p>This really simple networks allows for better understanding of
     the autograd mechanism. For only one sample, the computation graph
-    looks like this:
-    <img src="/posts/res/2025-11-25-11-42-47.png" width=250 > So let’s
-    break it down. The following code is used to collect the gradients
-    for the graph, where the graph in the plot are added directly to the
-    code:</p>
+    looks like this:</p>
+    <figure>
+    <img src="/posts/res/2025-11-25-11-42-47.png" width=250 >
+    </figure>
+    <p>So let’s break it down. The following code is used to collect the
+    gradients for the graph, where the graph in the plot are added
+    directly to the code:</p>
     <div class="sourceCode" id="cb9"><pre
     class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward_step(x, y, w):</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>        y_hat <span class="op">=</span> w <span class="op">@</span> x       <span class="co"># DotBackward0</span></span>
@@ -316,21 +322,27 @@
     <p>What happens if we do this with 4 samples instead of just one? We
     expect to have the same operations, but the respective samples are
     added before division.</p>
-    <p><img src="/posts/res/2025-11-25-11-49-45.png" width=300 > and
-    thats exactly happening!</p>
+    <figure>
+    <img src="/posts/res/2025-11-25-11-49-45.png" width=300 >
+    </figure>
+    <p>and thats exactly happening!</p>
     <p>So the computational graph for each sample looks the same, but
     before performing the avg calculation of the loss, all individual
     losses are summed up using <code>AddBackward</code> nodes.</p>
-    <p>Now with even more samples! (n=36)
-    <img src="/posts/res/2025-11-25-11-51-24.png" width=300 > But this
-    gets very hard to look at. However, the idea is really simple:
-    pytroch builds a computational graph for all operations done in the
-    neural network. When calling <code>loss.backward()</code>, the graph
-    is traversed in reverse order and the chain rule is applied to
-    calculate the gradients.</p>
+    <p>Now with even more samples! (n=36)</p>
+    <figure>
+    <img src="/posts/res/2025-11-25-11-51-24.png" width=300 >
+    </figure>
+    <p>But this gets very hard to look at. However, the idea is really
+    simple: pytroch builds a computational graph for all operations done
+    in the neural network. When calling <code>loss.backward()</code>,
+    the graph is traversed in reverse order and the chain rule is
+    applied to calculate the gradients.</p>
     <p>This visualization shows how the gradient descent works in the
-    loss landscape:
-    <img src="/posts/res/2025-11-13-13-45-57.png" width=300 ></p>
+    loss landscape:</p>
+    <figure>
+    <img src="/posts/res/2025-11-13-13-45-57.png" width=300 >
+    </figure>
   </main>
 
   <footer>

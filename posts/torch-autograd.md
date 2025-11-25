@@ -14,6 +14,7 @@ The general goal of Backpropagation is to calculate $\frac{\partial L}{\partial 
 This means intuitively, how much weight $w_i$ contributes to the current loss $L$, to see how you can improve the network.
 
 The core idea is that this can be calculated using the chain rule, which comes in handy. To revisit the chain rule:
+
 \[
     g(f(x))' = g'(f(x)) \cdot f'(x)
 \]
@@ -207,7 +208,11 @@ for epoch in range(epochs):
 
 
 The plot below shows a cool thing:
-<img src="/posts/res/2025-11-13-13-27-49.png" width=300 >
+
+<figure>
+    <img src="/posts/res/2025-11-13-13-27-49.png" width=300 >
+</figure>
+
 We are not overfitting, but really decreasing the overall loss. This indicates that one sample here is already helping to generalize, but has only limited information for the whole dataset. individual loss decreases and therefore also decreases overall loss. but when this is fitted, there is no more information to gain from this sample and the overall loss stagnates.
 Here the avg loss is aroung 26, while the individual loss is at 2.6
 
@@ -242,14 +247,20 @@ for epoch in range(epochs):
 ```
 
 Here all the operations are accumulated to a large computational graph. Calling the final `loss.backward()`, the gradient is calculated for all operations.  This converges to a lower avg loss of around 5 after 25 epochs.
-<img src="/posts/res/2025-11-25-11-05-52.png" width=300 >
+<figure>
+    <img src="/posts/res/2025-11-25-11-05-52.png" width=300 >
+</figure>
 
 of course we are not able to completely fit the data with only two weights, as the function includes a quadratic term.
 
 
 This really simple networks allows for better understanding of the autograd mechanism.
 For only one sample, the computation graph looks like this:
-<img src="/posts/res/2025-11-25-11-42-47.png" width=250 >
+
+<figure>
+    <img src="/posts/res/2025-11-25-11-42-47.png" width=250 >
+</figure>
+
 So let's break it down.
 The following code is used to collect the gradients for the graph, where the graph in the plot are added directly to the code:
 
@@ -272,16 +283,27 @@ This is pretty simple! Note that `PowBackward0` has an exponent of 2 and `DotBac
 
 What happens if we do this with 4 samples instead of just one? We expect to have the same operations, but the respective samples are added before division.
 
-<img src="/posts/res/2025-11-25-11-49-45.png" width=300 >
+
+<figure>
+    <img src="/posts/res/2025-11-25-11-49-45.png" width=300 >
+</figure>
+
 and thats exactly happening!
 
 So the computational graph for each sample looks the same, but before performing the avg calculation of the loss, all individual losses are summed up using `AddBackward` nodes.
 
 Now with even more samples! (n=36)
-<img src="/posts/res/2025-11-25-11-51-24.png" width=300 >
+
+<figure>
+    <img src="/posts/res/2025-11-25-11-51-24.png" width=300 >
+</figure>
+
 But this gets very hard to look at. However, the idea is really simple: pytroch builds a computational graph for all operations done in the neural network. When calling `loss.backward()`, the graph is traversed in reverse order and the chain rule is applied to calculate the gradients.
 
 
 
 This visualization shows how the gradient descent works in the loss landscape:
-<img src="/posts/res/2025-11-13-13-45-57.png" width=300 >
+
+<figure>
+    <img src="/posts/res/2025-11-13-13-45-57.png" width=300 >
+</figure>
