@@ -1,6 +1,7 @@
-pandoc posts/research-j.md \
-  --from markdown+raw_html+tex_math_dollars-yaml_metadata_block \
+pandoc posts/torch-autograd.md \
+  --from markdown+raw_html+tex_math_dollars+tex_math_single_backslash-yaml_metadata_block \
   --template=template.html \
   --standalone \
   --metadata-file=/dev/null \
-  -o posts/20251021-research-j.html
+  --mathjax \
+  -o posts/torch-autograd.html
