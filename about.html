@@ -3,54 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cesipy's Corner</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <title>About - Cesipy's Corner</title>
     <link rel="stylesheet" href="./styles.css">
 </head>
 
 <body>
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">☾</button>
+
   <header>
-    <img src="./assets/cesipis_corner_white_gb.png" alt="Cesipy's Corner Logo" class="logo-light" style="max-width: 350px; width: 100%;">
-    <img src="./assets/cesipis_corner_black_bg.png" alt="Cesipy's Corner Logo" class="logo-dark" style="max-width: 350px; width: 100%;">
+    <img src="./assets/cesipis_corner_black_text.png" alt="Cesipy's Corner Logo" class="logo-light">
+    <img src="./assets/cesipis_corner_white_text.png" alt="Cesipy's Corner Logo" class="logo-dark">
     <p>Thoughts, notes, and experiments.</p>
     <nav>
       <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="archive.html">Archive</a>
     </nav>
     <hr>
   </header>
 
-<main>
-  <div class="profile-container">
-    <img src="./posts/res/pb2_downscaled.jpeg" class="profile-img" alt="Cedric Sillaber">
+  <main>
+    <div class="profile-container">
+      <img src="./posts/res/pb2_downscaled.jpeg" class="profile-img" alt="Cedric Sillaber">
+      <div class="intro">
+        <p>
+          hello, i'm cedric, a computer science student from Innsbruck, Austria. currently i'm working on my bachelor thesis, where i analyze representational alignment in encoder-only transformers.
+        </p>
+
+      </div>
+    </div>
+
+
     <div class="intro">
+
       <p>
-        hello, i'm cedric, a computer science student from Innsbruck, Austria. currently i'm working on my bachelor thesis, where i analyze representational alignment in encoder-only transformers.
+        i like reading (check out my <a href="https://www.goodreads.com/user/show/147956107-cedric">goodreads</a>), sports (hiking and cycling) as well as ml/dl.
       </p>
 
+      <p>
+        you can checkout the following links if you want to learn more about me:
+      </p>
+      <ul class="link-list">
+        <li><a href="./assets/cv_public.pdf">my cv</a></li>
+        <li><a href="https://github.com/cesipy">my github</a></li>
+        <li><a href="https://www.linkedin.com/in/cedric-immanuel-sillaber-774b6926b/">my linkedin</a></li>
+      </ul>
     </div>
-  </div>
-
-
-  <div class="intro">
-
-    <p>
-      i like reading (check out my <a href="https://www.goodreads.com/user/show/147956107-cedric">goodreads</a>), sports (hiking and cycling) as well as ml/dl.
-    </p>
-
-    <p>
-      you can checkout the following links if you want to learn more about me:
-    </p>
-    <ul>
-      <li><a href="./assets/cv_public.pdf">my cv</a></li>
-      <li><a href="https://github.com/cesipy">my github</a></li>
-      <li><a href="https://www.linkedin.com/in/cedric-immanuel-sillaber-774b6926b/">my linkedin</a></li>
-    </ul>
-  </div>
-</main>
+  </main>
 
   <footer>
     <p>© 2025 Cedric Sillaber</p>
   </footer>
+
+  <script>
+    // Dark mode toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Check for saved theme preference or default to system preference
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme) {
+      body.classList.add(currentTheme);
+      themeToggle.textContent = currentTheme === 'dark-mode' ? '☀' : '☾';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      if (body.classList.contains('dark-mode')) {
+        body.classList.remove('dark-mode');
+        body.classList.add('light-mode');
+        themeToggle.textContent = '☾';
+        localStorage.setItem('theme', 'light-mode');
+      } else {
+        body.classList.remove('light-mode');
+        body.classList.add('dark-mode');
+        themeToggle.textContent = '☀';
+        localStorage.setItem('theme', 'dark-mode');
+      }
+    });
+  </script>
 
 </body>
 </html>

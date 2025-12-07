@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cesipy's Corner</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
     <link rel="stylesheet" href="/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
     MathJax = {
       tex: {
@@ -15,28 +13,58 @@
       }
     };
     </script>
-     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-  <header>
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">☾</button>
 
-    <img src="/assets/cesipis_corner_white_gb.png" alt="Cesipy's Corner Logo" class="logo-light" style="max-width: 350px; width: 100%;">
-    <img src="/assets/cesipis_corner_black_bg.png" alt="Cesipy's Corner Logo" class="logo-dark" style="max-width: 350px; width: 100%;">
+  <header>
+    <img src="/assets/cesipis_corner_white_gb.png" alt="Cesipy's Corner Logo" class="logo-light">
+    <img src="/assets/cesipis_corner_black_bg.png" alt="Cesipy's Corner Logo" class="logo-dark">
     <p>Thoughts, notes, and experiments.</p>
     <nav>
       <a href="/index.html">Home</a>
-      <a href="/about.html">About me</a>
+      <a href="/about.html">About</a>
+      <a href="/archive.html">Archive</a>
     </nav>
     <hr>
   </header>
 
   <main>
-    $body$
+    <article>
+      $body$
+    </article>
   </main>
 
   <footer>
-    <hr>
     <p>© 2025 Cedric Sillaber</p>
   </footer>
+
+  <script>
+    // Dark mode toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Check for saved theme preference or default to system preference
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme) {
+      body.classList.add(currentTheme);
+      themeToggle.textContent = currentTheme === 'dark-mode' ? '☀' : '☾';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      if (body.classList.contains('dark-mode')) {
+        body.classList.remove('dark-mode');
+        body.classList.add('light-mode');
+        themeToggle.textContent = '☾';
+        localStorage.setItem('theme', 'light-mode');
+      } else {
+        body.classList.remove('light-mode');
+        body.classList.add('dark-mode');
+        themeToggle.textContent = '☀';
+        localStorage.setItem('theme', 'dark-mode');
+      }
+    });
+  </script>
 </body>
 </html>
