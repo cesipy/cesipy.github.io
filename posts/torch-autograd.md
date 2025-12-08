@@ -1,77 +1,76 @@
-# Torch autograd
+# torch autograd
 
-
-This blogpost is my documented journey through autograd in torch.
-For the last two years I've been using pytorch, without properly understanding the mechanics of automatic differentiation. Of course I was aware of the mechanism of Backprop in general, as we thoroughly learned it in a Deep Learning course at university.
-There we studied it from a mathematical perspective and had to rehearse it until we could do it in our sleeps. But I fully understood how it was actually implemented in pytorch.
-And honestly, that was fine. If I would not have touched torch and pythons deep learning libraries without knowing every detail of its mechanisms, I would have never started.  Torch can be overwhelming at first and so much is possible. Therefore Im a big proponent of using it hands on  and learning it afterwards when you need it on the fly, a la Karpathy (insert link).
+this blogpost is my documented journey through autograd in torch.
+for the last two years i've been using pytorch, without properly understanding the mechanics of automatic differentiation. of course i was aware of the mechanism of backprop in general, as we thoroughly learned it in a deep learning course at university.
+there we studied it from a mathematical perspective and had to rehearse it until we could do it in our sleep. but i never fully understood how it was actually implemented in pytorch.
+and honestly, that was fine. if i would not have touched torch and python's deep learning libraries without knowing every detail of its mechanisms, i would have never started. torch can be overwhelming at first and so much is possible. therefore i'm a big proponent of using it hands on and learning it afterwards when you need it on the fly, à la karpathy ([this tweet](https://x.com/karpathy/status/1325154823856033793?lang=en)).
 "you only need to learn on demand".
 
 
 
-## Mathematical perspective of backpropagation
-The general goal of Backpropagation is to calculate $\frac{\partial L}{\partial w}$. This is, for every weight $w \in \theta$, we want to calculate its derivative of the loss.
-This means intuitively, how much weight $w_i$ contributes to the current loss $L$, to see how you can improve the network.
+## mathematical perspective of backpropagation
+the general goal of backpropagation is to calculate $\frac{\partial L}{\partial w}$. this is, for every weight $w \in \theta$, we want to calculate its derivative of the loss.
+this means intuitively, how much weight $w_i$ contributes to the current loss $L$, to see how you can improve the network.
 
-The core idea is that this can be calculated using the chain rule, which comes in handy. To revisit the chain rule:
+the core idea is that this can be calculated using the chain rule, which comes in handy. to revisit the chain rule:
 
 \[
     g(f(x))' = g'(f(x)) \cdot f'(x)
 \]
 
 
-The objective for our statistical model $f(x)$ is to minimize the loss, eg.
+the objective for our statistical model $f(x)$ is to minimize the loss, eg.
 \[
     \min_\theta L(y, f(x; \theta))
 \]
 
-for every single weight $w \in \theta$. So ideally, the following holds: $L(y, f(x;\theta))=0$.
+for every single weight $w \in \theta$. so ideally, the following holds: $L(y, f(x;\theta))=0$.
 
-How to do that? deriving the loss in terms of $w$ and updating $w$ accordingly using gradient descent!
+how to do that? deriving the loss in terms of $w$ and updating $w$ accordingly using gradient descent!
 
 therefore, we want to compute
 \[
     \frac{\partial L}{\partial w} = \frac{\partial L}{\partial f}  \frac{\partial f}{\partial w}
 \]
 
-Suppose we use a simple neural network with only one layer with three weights. Therefore, the model can be formalized to:
+suppose we use a simple neural network with only one layer with three weights. therefore, the model can be formalized to:
 \[
  f(x;\theta) =h(w_1 x_1 + w_2 x_2 + w_3 x_3 + b) = h(a)
 \]
 
-Note here, that the bias can be handled as an additional weight with constant input of 1, so we can ignore it for now.
-Here, $h$ is the activation function, e.g. ReLU or sigmoid. For this formalization, lets use the identity function, so $h(a) = a$. In addition, we use $L2$ loss:
+note here, that the bias can be handled as an additional weight with constant input of 1, so we can ignore it for now.
+here, $h$ is the activation function, e.g. ReLU or sigmoid. for this formalization, let's use the identity function, so $h(a) = a$. in addition, we use $L2$ loss:
 
 \[
 L(x,y) = (x-y)^2
 \]
 
-To compute $\frac{\partial L}{\partial w_1}$, we get the following:
+to compute $\frac{\partial L}{\partial w_1}$, we get the following:
 \[
     \frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial f} \cdot \frac{\partial f}{\partial a} \cdot \frac{\partial a}{\partial w_1}
 \]
 
-Now we can compute each part separately:
+now we can compute each part separately:
 - $\frac{\partial a}{\partial w_1} = x_1$ (simple derivative of linear function)
 - $\frac{\partial f}{\partial a} = h'(a) = 1$ (derivative of identity function)
 - $\frac{\partial L}{\partial f} = 2(f(x) - y)$ (derivative of L2 loss)
 
-We simply stick this together by mutliplying it:
+we simply stick this together by multiplying it:
 
 \[
     \frac{\partial L}{\partial w_1} = 2(f(x) - y) \cdot 1 \cdot x_1 = 2(f(x) - y) x_1
 \]
 
-Of course in real neural network we use different activation functions. For every activation function however it is possible to calculate its derivative beforehand.
-The same holds for different loss function. It is easy to calculate the derivative of the loss function beforehand.
+of course in real neural networks we use different activation functions. for every activation function however it is possible to calculate its derivative beforehand.
+the same holds for different loss functions. it is easy to calculate the derivative of the loss function beforehand.
 
-For deeper networks with multiple layers, the same principle applies. The chain rule is applied multiple times, where each layer contributes its own derivative.
+for deeper networks with multiple layers, the same principle applies. the chain rule is applied multiple times, where each layer contributes its own derivative.
 
-Lets say we have a two layer network:
+let's say we have a two layer network:
 \[
  f(x;\theta) = h_2(w_2 h_1(w_1 x + b_1) + b_2)
 \]
-To compute $\frac{\partial L}{\partial w_1}$, we get:
+to compute $\frac{\partial L}{\partial w_1}$, we get:
 \[
     \frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial f} \cdot \frac{\partial f}{\partial h_2} \cdot \frac{\partial h_2}{\partial a_2} \cdot \frac{\partial a_2}{\partial h_1} \cdot \frac{\partial h_1}{\partial a_1} \cdot \frac{\partial a_1}{\partial w_1}
 \]
@@ -80,10 +79,10 @@ To compute $\frac{\partial L}{\partial w_1}$, we get:
 
 
 
-## Simple examples
+## simple examples
 
-So how does torch autograd work in practice?
-Let's see in a simple example for two tensors, $a = 4, b=3$.
+so how does torch autograd work in practice?
+let's see in a simple example for two tensors, $a = 4, b=3$.
 
 ```python
 #simple grads:
@@ -96,15 +95,15 @@ c = a * b
 c.backward()
 ```
 
-what do we expect to see when computing $\frac{c}{a}$? By simple calculus rules we expect $\frac{c}{a} = b = 3$. Let's see the output:
+what do we expect to see when computing $\frac{\partial c}{\partial a}$? by simple calculus rules we expect $\frac{\partial c}{\partial a} = b = 3$. let's see the output:
 
 ```bash
 a.grad: 3.0
 b.grad: 4.0
 ```
-Nice!
+nice!
 
-Note that the gradients are accumulated.
+note that the gradients are accumulated.
 ```python
 c = a * b
 
@@ -120,20 +119,20 @@ c.backward()
 print(f"a.grad after second backward: {a.grad}")  # prints 6.0
 ```
 
-This is useful when doing gradient accumulation when you want to simulate larger batch sizes than your hardware allows.
+this is useful when doing gradient accumulation when you want to simulate larger batch sizes than your hardware allows.
 
 
-## Neural network example
-in order to generalize the example to neural network, consider the following example. Here we artificially construct a dataset with two inputs $x_1, x_2$ a scalar output $y=x_1 + 0.1x_2^2$
+## neural network example
+in order to generalize the example to neural networks, consider the following example. here we artificially construct a dataset with two inputs $x_1, x_2$ and a scalar output $y=x_1 + 0.1x_2^2$.
 
-We want to learn a simple linear layer $\vec w = w_1, w_2$ to learn the data.
+we want to learn a simple linear layer $\vec w = w_1, w_2$ to learn the data.
 
 
 ```python
 dps = [     # generates the dataset
     (
         torch.tensor((x1, x2), dtype=torch.float32),
-        torch.tensor(x1+ .02*x2**2)
+        torch.tensor(x1 + .1*x2**2)
     )
     for x1 in range(num_samples) for x2 in range(num_samples)
 ]       #len(dps) = num_samples^2
@@ -146,24 +145,24 @@ loss = (y_hat - y)**2   #simple least squares
 loss.backward()
 ```
 
-The output shows: `w.grad: tensor([-57.8978, -34.7387])` for `x=tensor([5., 3.]) tensor(52)`.  with a loss of `2692.5`.
-`input tensor([5., 3.]), y: 5.900000095367432, y_hat: 0.11022000014781952, loss: 33.52155303955078`
-Ok now we know the loss, i.e the error and can calculate how to change the weights to reduce the loss.
+the output shows: `w.grad: tensor([-57.8978, -34.7387])` for `x=tensor([5., 3.])`, `y=5.9`, with a loss of `33.52`.
 
-So theoretically, what do we expect? The following is the analytical solution for the derivative of $w_1$
+now we know the loss and can calculate how to update the weights to reduce it.
+
+so theoretically, what do we expect? the following is the analytical solution for the derivative of $w_1$:
 \[
-\frac{\partial L}{\partial w_1} = \frac{(w_1 x1 + w_2x2 - y)^2}{\partial w_1} = 2 (w_1 x_1 + w_2x_2 - y) x_1
+\frac{\partial L}{\partial w_1} = \frac{\partial (w_1 x_1 + w_2 x_2 - y)^2}{\partial w_1} = 2 (w_1 x_1 + w_2 x_2 - y) x_1
 \\
-\Rightarrow 2(0.0213 \cdot 5 + 0.00124\cdot 3 - 5.9) \cdot 5 = -57.89.
+\Rightarrow 2(0.0213 \cdot 5 + 0.00124\cdot 3 - 5.9) \cdot 5 = -57.89
 \]
-As we can see, our calculated gradient is correct!
+as we can see, our calculated gradient is correct!
 
 
-What happens under the hood?
-The autograd engine builds a computational graph dynamically, where each tensor operation creates a new node in the graph. Each node keeps track of the operation that created it and its parent nodes. When we call `backward()`, PyTorch traverses this graph in reverse order, applying the chain rule to compute gradients for each tensor that has `requires_grad=True`.
+what happens under the hood?
+the autograd engine builds a computational graph dynamically, where each tensor operation creates a new node in the graph. each node keeps track of the operation that created it and its parent nodes. when we call `backward()`, pytorch traverses this graph in reverse order, applying the chain rule to compute gradients for each tensor that has `requires_grad=True`.
 
 
-using the gradient descent optimization, we can update the weight and rerun and see how it works:
+using gradient descent optimization, we can update the weight and rerun and see how it works:
 ```python
 with torch.no_grad():
     w = w - lr * w.grad
@@ -175,14 +174,14 @@ loss = (y_hat - y)**2
 print(f"after one gradient step: input {x}, y: {y}, y_hat: {y_hat}, loss: {loss.item()}")
 ```
 
-As you can see below, this significantly increases our prediction!
+as you can see below, this significantly improves our prediction!
 ```bash
-input tensor([5., 3.]), y: 52, y_hat: 0.11022000014781952, loss: 2692.549072265625
-after one gradient step: input tensor([5., 3.]), y: 52, y_hat: 17.75274658203125, loss: 1172.8743896484375
+input tensor([5., 3.]), y: 5.9, y_hat: 0.11022000014781952, loss: 33.52155303955078
+after one gradient step: input tensor([5., 3.]), y: 5.9, y_hat: 2.89, loss: 9.06
 ```
 
 
-Of course, we don't want the model to overfit and *only learn to fit* one sample. For this above case, we update the weights only based on one sample. To test the loss for the whole dataset even if only one sample is optimized the following plot shows:
+of course, we don't want the model to overfit and *only learn to fit* one sample. for this above case, we update the weights only based on one sample. to test the loss for the whole dataset even if only one sample is optimized, the following plot shows:
 
 
 
@@ -207,24 +206,23 @@ for epoch in range(epochs):
 ```
 
 
-The plot below shows a cool thing:
+the plot below shows a cool thing:
 
 <figure>
     <img src="/posts/res/2025-11-13-13-27-49.png" width=300 >
 </figure>
 
-We are not overfitting, but really decreasing the overall loss. This indicates that one sample here is already helping to generalize, but has only limited information for the whole dataset. individual loss decreases and therefore also decreases overall loss. but when this is fitted, there is no more information to gain from this sample and the overall loss stagnates.
-Here the avg loss is aroung 26, while the individual loss is at 2.6
+we are not overfitting, but really decreasing the overall loss. one sample carries enough signal to reduce overall loss, but only so much—once it's fit, there's no more information to extract from it, and the overall loss stagnates.
+here the avg loss is around 26, while the individual loss is at 2.6.
 
 
-In the next step the gradient is accumulated for the whole dataset and then updated using standard gradient descent.
+in the next step the gradient is accumulated for the whole dataset and then updated using standard gradient descent.
 
 ```python
- def forward_step(x, y, w):
-        y_hat = w @ x
-
-        loss = (y_hat - y)**2   #simple least squares
-        return loss
+def forward_step(x, y, w):
+    y_hat = w @ x
+    loss = (y_hat - y)**2   #simple least squares
+    return loss
 
 def evaluate_over_dataset(dps, w):
     total_loss = 0
@@ -246,7 +244,7 @@ for epoch in range(epochs):
 
 ```
 
-Here all the operations are accumulated to a large computational graph. Calling the final `loss.backward()`, the gradient is calculated for all operations.  This converges to a lower avg loss of around 5 after 25 epochs.
+here all the operations are accumulated to a large computational graph. calling the final `loss.backward()`, the gradient is calculated for all operations. this converges to a lower avg loss of around 5 after 25 epochs.
 <figure>
     <img src="/posts/res/2025-11-25-11-05-52.png" width=300 >
 </figure>
@@ -254,56 +252,57 @@ Here all the operations are accumulated to a large computational graph. Calling 
 of course we are not able to completely fit the data with only two weights, as the function includes a quadratic term.
 
 
-This really simple networks allows for better understanding of the autograd mechanism.
-For only one sample, the computation graph looks like this:
+this really simple network allows for better understanding of the autograd mechanism.
+for only one sample, the computation graph looks like this:
 
 <figure>
     <img src="/posts/res/2025-11-25-11-42-47.png" width=250 >
 </figure>
 
-So let's break it down.
-The following code is used to collect the gradients for the graph, where the graph in the plot are added directly to the code:
+so let's break it down.
+the following code is used to collect the gradients for the graph, where the graph nodes are added directly to the code:
 
 ```python
 def forward_step(x, y, w):
-        y_hat = w @ x       # DotBackward0
-        loss = (y_hat - y)  # SubBackward0
-        loss = loss**2      # PowBackward0
-        return loss
+    y_hat = w @ x       # DotBackward0
+    loss = (y_hat - y)  # SubBackward0
+    loss = loss**2      # PowBackward0
+    return loss
 
-    def evaluate_over_dataset(dps, w):
-        total_loss = torch.tensor(0.0)
-        for x, y in dps:
-            total_loss += forward_step(x, y, w)   # AddBackward0
-        return total_loss  / len(dps) # DivBackward0
+def evaluate_over_dataset(dps, w):
+    total_loss = torch.tensor(0.0)
+    for x, y in dps:
+        total_loss += forward_step(x, y, w)   # AddBackward0
+    return total_loss / len(dps) # DivBackward0
 ```
 
-This is pretty simple! Note that `PowBackward0` has an exponent of 2 and `DotBackward0` operates $w\cdot 2$ because of the chain rule. This is formalized in the equation above.
+this is pretty simple! note that `PowBackward0` has an exponent of 2 and `DotBackward0` operates on $w \cdot x$ because of the chain rule. this is formalized in the equation above.
 
 
-What happens if we do this with 4 samples instead of just one? We expect to have the same operations, but the respective samples are added before division.
+what happens if we do this with 4 samples instead of just one? we expect to have the same operations, but the respective samples are added before division.
 
 
 <figure>
     <img src="/posts/res/2025-11-25-11-49-45.png" width=300 >
 </figure>
 
-and thats exactly happening!
+and that's exactly what's happening!
 
-So the computational graph for each sample looks the same, but before performing the avg calculation of the loss, all individual losses are summed up using `AddBackward` nodes.
+so the computational graph for each sample looks the same, but before performing the avg calculation of the loss, all individual losses are summed up using `AddBackward` nodes.
 
-Now with even more samples! (n=36)
+now with even more samples! (n=36)
 
 <figure>
     <img src="/posts/res/2025-11-25-11-51-24.png" width=300 >
 </figure>
 
-But this gets very hard to look at. However, the idea is really simple: pytroch builds a computational graph for all operations done in the neural network. When calling `loss.backward()`, the graph is traversed in reverse order and the chain rule is applied to calculate the gradients.
+but this gets very hard to look at. however, the idea is really simple: pytorch builds a computational graph for all operations done in the neural network. when calling `loss.backward()`, the graph is traversed in reverse order and the chain rule is applied to calculate the gradients.
 
 
 
-This visualization shows how the gradient descent works in the loss landscape:
+this visualization shows how gradient descent works in the loss landscape:
 
 <figure>
     <img src="/posts/res/2025-11-13-13-45-57.png" width=300 >
 </figure>
+
