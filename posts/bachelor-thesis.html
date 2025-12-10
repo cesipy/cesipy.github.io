@@ -35,31 +35,31 @@
       <h1
       id="representational-alignment-in-multimodal-transformers">representational
       alignment in multimodal transformers</h1>
-      <p>this post covers the work of my bachelor thesis. during the
-      last few months, i did a deep dive into (encoder-)transformers,
-      alignment in multimodal transformers, and representational
-      similarity. here, i show my findings and other interesting stuff i
-      found during my research.</p>
+      <p>this post covers the theory and findings of my bachelor thesis.
+      during the last few months, i did a deep dive into
+      (encoder-)transformers, alignment in multimodal transformers, and
+      representational similarity. here, i show my findings and other
+      interesting stuff i encountered during my research.</p>
       <h2 id="high-level-overview">high-level overview</h2>
-      <p>during my work on the thesis, many people asked me about my
-      thesis topic. when trying to explain it even to other cs students,
-      i struggled, as it is a pretty specialized topic. not even to
-      mention how hard it was to explain it to non-cs people. therefore,
-      i want to give a high-level overview of my thesis topic.</p>
-      <p>in a nutshell, my research is on the question: <em>how to bring
-      together vision and language</em>? our brain brings together
-      different senses to form the experience we have. for example, when
-      we <em>eat</em> an apple, we see the red color, <em>smell</em> the
-      distinct apple scent, <em>taste</em> the sweet flavor, et
-      cetera.</p>
+      <p>during the work on my thesis, many people asked me about its
+      topic. when trying to explain it even to other cs students i
+      struggled, as it is a pretty specialized topic. not to mention how
+      hard it was to explain it to non-cs people. therefore, i want to
+      start with a high-level overview of the topic.</p>
+      <p>in a nutshell, my research covers the question: <em>how to
+      bring together vision and language</em>? our brain brings together
+      different senses to form the experience of the world. for example,
+      when we <em>eat</em> an apple, we <em>see</em> the red color,
+      <em>smell</em> the distinct apple scent, <em>taste</em> the sweet
+      flavor, et cetera.</p>
       <figure>
       <img src="/posts/res/2025-12-07-17-52-25.png" width=300 >
       </figure>
-      for this central question, several approaches were developed. one
-      approach is to use two different encoders (we can think of them as
-      black boxes) that transform each modality (vision, language).
-      after some processing, they are merged together. in my thesis i
-      analyzed:
+      <p>for this central question, several approaches were developed.
+      one approach is to use two different encoders (we can think of
+      them as black boxes) that transform each modality (vision,
+      language). after some processing, they are merged together. in my
+      thesis i analyzed:</p>
       <figure>
       <ol type="i">
       <li>when to merge<br></li>
@@ -83,14 +83,18 @@
       of an apple) can provide complementary information. this means
       that each modality conveys idiosyncratic information that the
       other modality does not. by fusing them together, the resulting
-      representation includes both modalities. in some cases, the
+      representation captures both modalities. in some cases, the
       additional information is only available by combining both
-      modalities. an example is memes with ambiguous jokes. here, one
-      modality alone does not suffice to understand the joke. only in
-      combination of image and text does the joke become clear.</p>
+      modalities. an example of this is memes with ambiguous jokes.
+      here, one modality alone does not suffice to understand the joke.
+      the combination of image and text is necessary to understand the
+      joke.</p>
       <p>in addition, encoding data to vector representations has a
-      couple of advantages: - encode different lengths of text to fixed
-      lengths - dot products have a well-defined meaning</p>
+      couple of advantages:</p>
+      <ul>
+      <li>encode different lengths of text to fixed lengths</li>
+      <li>dot products have a well-defined meaning</li>
+      </ul>
       <h2 id="detailed-overview">detailed overview</h2>
       <p>in the research field of representation learning, the
       fundamental idea is <em>the manifold hypothesis</em>. it states
@@ -98,7 +102,8 @@
       low-dimensional manifold embedded in a high-dimensional space.
       this means that although the data is represented in a
       high-dimensional space (e.g., pixel values of an image), the
-      actual information content is much lower dimensional.</p>
+      actual information content is much lower dimensional. the goal is
+      to extract the low dimensional manifold using encoders.</p>
       <h3 id="encoders">encoders</h3>
       <p>encoding data to vectors is a common approach to generate
       semantic low-dimensional representations of data. these
@@ -111,8 +116,8 @@
       of noise. images of handwritten digits are a prominent example for
       this. a <span class="math inline">\(64\times64\)</span> array of
       pixels has 4096 dimensions. however, the actual information
-      content has a dimensionality of one or two.</p>
-      <p>using a suitable encoder, the data is transformed to the
+      content has a much lower dimensionality.</p>
+      <p>using a suitable encoder, the data is transformed into a
       smaller vector, capturing the relevant information.</p>
       <p><span class="math display">\[
       enc: \mathbb R^m \to \mathbb R^n, \quad m \gg n
@@ -123,31 +128,35 @@
       <span class="math inline">\(u,v \in \mathbb R^n\)</span>, the
       probability</p>
       <p><span class="math display">\[
-          u\cdot v = u^T v \\
-          p(u|v) = \frac{\exp(u\cdot v)}{\sum_{w\in V} \exp(w\cdot v)}
-      \]</span> is maximized. using <span
+      u\cdot v = u^T v \\
+      p(u|v) = \frac{\exp(u\cdot v)}{\sum_{w\in V} \exp(w\cdot v)}
+      \]</span></p>
+      <p>is maximized. using <span
       class="math inline">\(\exp(\cdot)\)</span> ensures that the dot
       product is positive and amplifies differences. the denominator is
       a normalization factor over all the words, ensuring that the
       probabilities sum to one.</p>
-      <p>newer architectures like BERT use the attention mechanism in
-      transformers to encode text. using two pretraining techniques, the
-      transformer implicitly learns to encode text to semantically
+      <p>more recent architectures like bert use the attention mechanism
+      in transformers to encode text. using two pretraining techniques,
+      the transformer implicitly learns to encode text to semantically
       meaningful vectors. basically, the transformer learns to transform
       representations to a more suitable form for downstream tasks. in a
-      transformer like BERT, multiple layers exist. in BERT base, there
-      are 12 layers. every layer transforms the representation to a new
-      representation.</p>
+      transformer like bert, multiple layers are used. each layer
+      extracts features, which are transformed by the next layer. for
+      example in bert base, 12 layers are used, transforming the input
+      data to a new representation. the last representation is used for
+      tasks like classification and embeddings for vector databases.</p>
       <h3 id="early-vs.-late-fusion">early vs. late fusion</h3>
-      <p>in the ViLBERT architecture (by Lu et al., 2019), the idea is
-      similar to the brain. separate pretrained encoder models process
-      each modality before integrating them into one representation.</p>
+      <p>the vilbert architecture (by lu et al., 2019) is inspired by
+      the brain. our brain processes sensory data before integrating
+      them together. separate pretrained encoder models process each
+      modality before integrating them into one representation.</p>
       <p>individual processing extracts relevant features from raw data.
       by using pretrained models, the model can leverage knowledge
       learned from large datasets. this is especially useful when the
       multimodal dataset is small.</p>
-      <p>for the text modality, a BERT model is used, while vision
-      utilizes a vision transformer (ViT). both BERT and ViT consist of
+      <p>for the text modality, a bert model is used, while vision
+      utilizes a vision transformer (vit). both bert and vit consist of
       12 transformer layers. in order to fuse the modalities, a
       bidirectional cross-attention layer is placed between the 12
       layers. this acts as a coordination mechanism on the
@@ -155,12 +164,12 @@
       <figure>
       <img src="./res/vilbert.png" width=300>
       </figure>
-      <p>the above figure shows the two streams. up to layer three, the
-      modalities extract features independently. only in layer 4 are
-      both modalities fused together. while independent feature
-      extraction is performed using <em>self-attention</em>, the fusion
-      is done using <em>cross-attention</em>.</p>
-      <p>below, the cross-attention block introduced in ViLBERT is shown
+      <p>the above figure depicts the dual-stream architecture. up to
+      layer three, the modalities extract features independently. layer
+      four fuses both modalities together. while independent feature
+      extraction is performed using <em>self-attention</em>, fusion is
+      achieved by <em>cross-attention</em>.</p>
+      <p>below, the cross-attention block introduced in vilbert is shown
       in detail.</p>
       <figure>
       <img src="/posts/res/2025-12-08-14-16-35.png" width=400 >
@@ -170,7 +179,7 @@
       class="math inline">\(K_{modality}, V_{modality}\)</span>). the
       formula for vision therefore is:</p>
       <p><span class="math display">\[
-          \operatorname{Softmax}(\frac {Q_V^TK_W} {\sqrt d} )V_W
+      \operatorname{softmax}\left(\frac {Q_V^TK_W} {\sqrt d} \right)V_W
       \]</span></p>
       <p>to build intuition: the vision stream has its queries <span
       class="math inline">\(Q_V\)</span>. these queries are used to find
@@ -180,10 +189,10 @@
       standard attention, the factor <span
       class="math inline">\(d\)</span> is used to prevent large dot
       products. it’s not relevant here.</p>
-      <p>the strength of this approach is its modularity. ViLBERT’s
+      <p>the strength of this approach is its modularity. vilbert’s
       dual-stream architecture allows different fusion methods like
       early, middle, and late fusion.</p>
-      <p>in modality theory, modalities are on a spectrum with the
+      <p>in multimodal theory, modalities are on a spectrum with the
       extremes of <em>raw</em> and <em>abstract</em>. input data is raw,
       while encoded/processed data is abstract. early fusion fuses raw
       data, while late fusion fuses abstract data. middle fusion is in
@@ -191,12 +200,15 @@
       might need raw modalities (e.g., image captioning), while others
       might benefit from abstract modalities (e.g., visual question
       answering). i evaluated these configurations on three datasets
-      (hateful memes, mm-imdb, upmc food-101). the three tasks: -
-      mm-imdb: predict genre based on movie description and poster;
-      relatively easy task, text dominant - upmc food-101: predict food
-      type based on image and recipe; medium difficulty, image dominant
-      - hateful memes: predict if a meme is hateful; hard task, needs
-      both modalities and complex reasoning abilities</p>
+      (hateful memes, mm-imdb, upmc food-101). the three tasks:</p>
+      <ul>
+      <li>mm-imdb: predict genre based on movie description and poster;
+      relatively easy task, text dominant</li>
+      <li>upmc food-101: predict food type based on image and recipe;
+      medium difficulty, image dominant</li>
+      <li>hateful memes: predict if a meme is hateful; hard task, needs
+      both modalities and complex reasoning abilities</li>
+      </ul>
       <h2 id="late-fusion-wins">late fusion wins</h2>
       <p>in my thesis i compared different cross-attention placements on
       three different tasks. the table shows a selection of
@@ -264,7 +276,7 @@
       <h3 id="why-does-this-happen">why does this happen?</h3>
       <p>i decided to further investigate <em>why</em> late fusion
       outperformed early fusion. here i utilized representational
-      alignment metrics (CKA, orthogonal procrustes, SVCCA) and
+      alignment metrics (cka, orthogonal procrustes, svcca) and
       dimensionality reduction to further explain the inner workings of
       the transformers.</p>
       <p>the first analysis compared representational similarity after
@@ -280,9 +292,8 @@
       \]</span></p>
       <figure>
       <img src="/posts/res/2025-12-08-15-56-15.png" width=900 >
-      <figcaption>
-      representational similarity (CKA) of layer transitions, gray
-      indicates cross-attention placement, n=3 seeds
+      &lt;figcaption&gt;representational similarity (cka) of layer
+      transitions, gray indicates cross-attention placement, n=3 seeds
       </figcaption>
       </figure>
       <p>this plot reveals something interesting. when you look at the
@@ -321,7 +332,7 @@
       decreases effective dimensionality of the vision stream.
       self-attention learns complex features that are combined into
       rather simple features in cross-attention. in my thesis, i
-      hypothesized that BERT features are more robust than ViT features
+      hypothesized that bert features are more robust than vit features
       due to their different pretraining objectives and patch-based
       representation.</p>
     </article>
