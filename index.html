@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cesipy's Corner</title>
     <link rel="stylesheet" href="./styles.css">
+    <script defer src="./cursor-glow.js"></script>
     <link rel="canonical" href="https://cesipy.github.io/">
     <meta name="google-site-verification" content="-gZW8xuaeFI383k-vrUOsY-yexGd0S3ixxTPkyID098" />
 </head>
@@ -16,7 +17,7 @@
     <img src="./assets/cesipis_corner_white_text.png" alt="Cesipy's Corner Logo" class="logo-dark">
     <p>thoughts, notes, and experiments.</p>
     <nav>
-      <a href="index.html">home</a>
+      <a href="index.html" aria-current="page">home</a>
       <a href="about.html">about</a>
       <a href="archive.html">archive</a>
     </nav>
@@ -24,12 +25,15 @@
   </header>
 
   <main>
-    <p>welcome to my corner of the internet where i share my thoughts on machine learning, deep learning, and computer science.</p>
+    <section class="home-intro" aria-labelledby="home-title">
+      <h1 id="home-title">hi, i'm cedric.</h1>
+      <p>i write about machine learning, deep learning, and computer science.</p>
+    </section>
 
     <h2>recent posts</h2>
 
     <ul class="post-list">
-      <li>
+      <li class="featured-post">
         <h3 class="post-title">
           <a href="posts/bachelor-thesis.html">my bsc thesis</a>
         </h3>
@@ -47,7 +51,7 @@
   </main>
 
   <footer>
-    <p>© 2025 Cedric Sillaber</p>
+    <p>© 2026 Cedric Sillaber</p>
   </footer>
 
   <script>
