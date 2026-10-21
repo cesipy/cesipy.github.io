@@ -2,13 +2,13 @@
 .vibed-page main { padding-top: 2rem; }
 .vibed-intro { margin: 0 0 2.25rem; }
 .vibed-eyebrow, .vibed-project-kind { color: var(--accent-color); font-size: .8rem; letter-spacing: .06em; }
-.vibed-intro h1 { font-size: clamp(2rem, 5vw, 2.8rem); letter-spacing: -.045em; margin: .35rem 0; }
+.vibed-intro h1 { margin: .35rem 0; }
 .vibed-intro p { margin: .5rem 0 0; color: var(--text-secondary); }
 .vibed-project-list { border-top: 1px solid var(--border-light); }
 .vibed-project { padding: 1.4rem 0 1.75rem; border-bottom: 1px solid var(--border-light); }
 .vibed-project-art { height: clamp(100px, 18vw, 145px); margin: 0 0 1.1rem; object-position: center 68%; }
 .vibed-project-kind { font-size: .72rem; text-transform: uppercase; }
-.vibed-project h2 { margin: .25rem 0 .45rem; font-size: 1.25rem; }
+.vibed-project h2 { margin: .25rem 0 .45rem; }
 .vibed-project p { max-width: 62ch; margin: 0 0 .65rem; color: var(--text-secondary); }
 .vibed-project-copy a { color: var(--text-primary); font-size: .9rem; text-decoration-color: var(--accent-color); text-decoration-thickness: 2px; text-underline-offset: .2em; }
 .vibed-project-copy a:hover { color: var(--accent-color); }

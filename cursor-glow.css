@@ -1,0 +1,43 @@
+/* A soft cursor halo that stays behind page content and keeps native cursors. */
+.cursor-glow {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  body.cursor-glow-enabled {
+    isolation: isolate;
+  }
+
+  body.cursor-glow-enabled > .cursor-glow {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 320px;
+    height: 320px;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(6, 192, 120, 0.13) 0%,
+      rgba(6, 192, 120, 0.08) 26%,
+      rgba(6, 192, 120, 0) 70%
+    );
+    filter: blur(10px);
+    opacity: 0;
+    transform: translate3d(0, 0, 0) translate(-50%, -50%);
+    transition: opacity 240ms ease;
+    will-change: transform, opacity;
+  }
+}
+
+@media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
+  body.cursor-glow-enabled {
+    isolation: auto;
+  }
+
+  body.cursor-glow-enabled > .cursor-glow {
+    display: none !important;
+  }
+}
