@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vibed - Cesipy's Corner</title>
+  <meta name="description" content="Small experiments, built by following an idea.">
+  <link rel="canonical" href="https://cesipy.github.io/vibed.html">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./vibed.css">
+</head>
+<body class="vibed-page">
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">☾</button>
+  <header>
+    <img src="./assets/cesipis_corner_black_text.png" alt="Cesipy's Corner Logo" class="logo-light">
+    <img src="./assets/cesipis_corner_white_text.png" alt="Cesipy's Corner Logo" class="logo-dark">
+    <p>thoughts, notes, and experiments.</p>
+    <nav aria-label="Main navigation">
+      <a href="index.html">home</a>
+      <a href="about.html">about</a>
+      <a href="archive.html">archive</a>
+      <a href="vibed.html" aria-current="page">vibed</a>
+    </nav>
+    <hr>
+  </header>
+  <main>
+    <h1>vibed.</h1>
+    <div class="vibed-intro">
+      <span class="vibed-eyebrow">a small corner for ideas</span>
+      <p>small experiments, built by following an idea.</p>
+    </div>
+
+    <section class="vibed-project-list" aria-label="Projects">
+      <article class="vibed-project">
+        <img class="mountain-sketch vibed-project-art" src="./assets/mountains/layered-distance.png" alt="" aria-hidden="true" width="2172" height="724">
+        <div class="vibed-project-copy">
+          <span class="vibed-project-kind">interactive study</span>
+          <h2>mountain studio</h2>
+          <p>generate pencil landscapes with independent terrain styles, creative shape controls, and transparent png export.</p>
+          <a href="./mountains.html">open studio <span aria-hidden="true">↗</span></a>
+        </div>
+      </article>
+    </section>
+  </main>
+  <footer><p>© 2026 Cedric Sillaber</p></footer>
+  <script>
+    (() => {
+      const toggle = document.getElementById('theme-toggle');
+      const darkPreference = window.matchMedia('(prefers-color-scheme: dark)');
+      let theme;
+      try { theme = localStorage.getItem('theme'); } catch (_) { /* Theme works without storage. */ }
+      const update = () => {
+        const dark = document.body.classList.contains('dark-mode') || (!document.body.classList.contains('light-mode') && darkPreference.matches);
+        toggle.textContent = dark ? '☀' : '☾';
+        toggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+      };
+      if (theme === 'light-mode' || theme === 'dark-mode') document.body.classList.add(theme);
+      update();
+      darkPreference.addEventListener('change', update);
+      toggle.addEventListener('click', () => {
+        const dark = document.body.classList.contains('dark-mode') || (!document.body.classList.contains('light-mode') && darkPreference.matches);
+        document.body.classList.remove('dark-mode', 'light-mode');
+        theme = dark ? 'light-mode' : 'dark-mode';
+        document.body.classList.add(theme);
+        try { localStorage.setItem('theme', theme); } catch (_) { /* Optional persistence. */ }
+        update();
+      });
+    })();
+  </script>
+</body>
+</html>

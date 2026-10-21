@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mountain Studio - Cesipy's Corner</title>
+  <meta name="description" content="Generate a new pencil mountain landscape from scratch. Random terrain, hand-drawn textures, transparent PNG downloads, and shareable seeds.">
+  <link rel="canonical" href="https://cesipy.github.io/mountains.html">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./mountains.css">
+  <script src="./mountain-terrain-v2.js" defer></script>
+  <script src="./mountain-terrain.js" defer></script>
+  <script src="./mountains.js" defer></script>
+</head>
+<body class="studio-page">
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">☾</button>
+  <header>
+    <img src="./assets/cesipis_corner_black_text.png" alt="Cesipy's Corner Logo" class="logo-light">
+    <img src="./assets/cesipis_corner_white_text.png" alt="Cesipy's Corner Logo" class="logo-dark">
+    <p>thoughts, notes, and experiments.</p>
+    <nav aria-label="Main navigation">
+      <a href="index.html">home</a>
+      <a href="about.html">about</a>
+      <a href="archive.html">archive</a>
+      <a href="vibed.html" aria-current="location">vibed</a>
+    </nav>
+    <hr>
+  </header>
+  <main>
+    <div class="studio-intro">
+      <span class="studio-eyebrow">a small experiment</span>
+      <h1>mountain studio.</h1>
+      <p>a new landscape, drawn from scratch. no two horizons alike.</p>
+      <a class="studio-backlink" href="./vibed.html">← back to vibed</a>
+    </div>
+
+    <section aria-label="Mountain composer">
+      <figure class="studio-paper">
+        <canvas id="mountain-canvas" width="2400" height="800" role="img" aria-label="Your composed pencil mountain landscape" aria-describedby="studio-sources">Your browser needs canvas support to preview and download a landscape.</canvas>
+        <figcaption><span>graphite studies</span><span>01 — ∞</span></figcaption>
+      </figure>
+      <div class="studio-toolbar">
+        <div class="studio-actions">
+          <button type="button" class="studio-button studio-primary" id="generate-mountains">new landscape <span aria-hidden="true">↗</span></button>
+          <button type="button" class="studio-button" id="previous-mountains" disabled>previous</button>
+        </div>
+        <p id="studio-status" role="status" aria-live="polite">preparing the pencils…</p>
+      </div>
+      <p class="studio-preview-note" id="renderer-version-notice" role="note" hidden>
+        <span id="renderer-version-message"></span>
+        <button type="button" class="studio-button" id="update-renderer" aria-label="Use renderer version 3 for this landscape" hidden>use updated drawing</button>
+      </p>
+
+      <section class="studio-character" aria-labelledby="character-label">
+        <label id="character-label" for="character">character <output id="character-value" for="character">50%</output></label>
+        <input id="character" type="range" min="0" max="100" value="50" step="1" aria-describedby="character-help character-state" disabled>
+        <div class="studio-character-endpoints" aria-hidden="true"><span>quiet</span><span>expressive</span></div>
+        <p class="studio-hint" id="character-help">one slider for shape, depth, texture, and shading.</p>
+        <p class="studio-character-state" id="character-state" role="status" aria-live="polite">balanced starting point</p>
+      </section>
+
+      <details id="advanced-controls" class="studio-advanced">
+        <summary>advanced settings</summary>
+        <fieldset id="studio-controls" disabled>
+          <legend>fine tune the landscape</legend>
+          <div class="studio-control-grid">
+          <div class="studio-control">
+            <label for="ridge-select">foreground terrain</label>
+            <select id="ridge-select">
+              <option value="auto" selected>surprise me</option>
+              <option value="alpine">alpine ridges</option>
+              <option value="jagged">sharp peaks</option>
+              <option value="rolling">gentle mountains</option>
+              <option value="massif">solitary massif</option>
+              <option value="valley">open valley</option>
+              <option value="plateau">flat-topped cliffs</option>
+              <option value="spires">broken spires</option>
+              <option value="asymmetric">sweeping ridge</option>
+            </select>
+            <span class="studio-hint">sets the style of the nearest ridge</span>
+          </div>
+          <div class="studio-control">
+            <label for="mid-ridge-select">middle terrain</label>
+            <select id="mid-ridge-select" aria-describedby="middle-terrain-help">
+              <option value="same" selected>same as foreground</option>
+              <option value="auto">surprise me</option>
+              <option value="alpine">alpine ridges</option>
+              <option value="jagged">sharp peaks</option>
+              <option value="rolling">gentle mountains</option>
+              <option value="massif">solitary massif</option>
+              <option value="valley">open valley</option>
+              <option value="plateau">flat-topped cliffs</option>
+              <option value="spires">broken spires</option>
+              <option value="asymmetric">sweeping ridge</option>
+            </select>
+            <span class="studio-hint" id="middle-terrain-help">2+ layers · choose a different terrain or let it surprise you</span>
+          </div>
+          <div class="studio-control">
+            <label for="far-ridge-select">distant terrain</label>
+            <select id="far-ridge-select" aria-describedby="distant-terrain-help">
+              <option value="same" selected>same as foreground</option>
+              <option value="auto">surprise me</option>
+              <option value="alpine">alpine ridges</option>
+              <option value="jagged">sharp peaks</option>
+              <option value="rolling">gentle mountains</option>
+              <option value="massif">solitary massif</option>
+              <option value="valley">open valley</option>
+              <option value="plateau">flat-topped cliffs</option>
+              <option value="spires">broken spires</option>
+              <option value="asymmetric">sweeping ridge</option>
+            </select>
+            <span class="studio-hint" id="distant-terrain-help">3 layers · a separate terrain for the far horizon</span>
+          </div>
+          <div class="studio-control">
+            <label for="layers">layers <output id="layers-value" for="layers">2</output></label>
+            <input id="layers" type="range" min="1" max="3" value="2" step="1">
+            <span class="studio-hint">one ridge to a distant range</span>
+          </div>
+          <div class="studio-control">
+            <label for="graphite">pencil strength <output id="graphite-value" for="graphite">65%</output></label>
+            <input id="graphite" type="range" min="25" max="100" value="65" step="1">
+            <span class="studio-hint">a whisper to a darker line</span>
+          </div>
+          <div class="studio-control">
+            <label for="shading">shading <output id="shading-value" for="shading">50%</output></label>
+            <input id="shading" type="range" min="0" max="100" value="50" step="1" aria-describedby="shading-help">
+            <span class="studio-hint" id="shading-help">outline only to deep, high-contrast shadows</span>
+          </div>
+          <div class="studio-control">
+            <label for="spacing">depth <output id="spacing-value" for="spacing">50%</output></label>
+            <input id="spacing" type="range" min="0" max="100" value="50" step="1">
+            <span class="studio-hint">bring the ridges together or apart</span>
+          </div>
+          <div class="studio-control">
+            <label for="sharpness">sharpness <output id="sharpness-value" for="sharpness">50%</output></label>
+            <input id="sharpness" type="range" min="0" max="100" value="50" step="1" aria-describedby="sharpness-help">
+            <span class="studio-hint" id="sharpness-help">rounded slopes to knife-edge peaks</span>
+          </div>
+          <div class="studio-control">
+            <label for="bumpiness">bumpiness <output id="bumpiness-value" for="bumpiness">50%</output></label>
+            <input id="bumpiness" type="range" min="0" max="100" value="50" step="1" aria-describedby="bumpiness-help">
+            <span class="studio-hint" id="bumpiness-help">smooth contours to craggy surface detail</span>
+          </div>
+          <div class="studio-control">
+            <label for="entropy">entropy <output id="entropy-value" for="entropy">50%</output></label>
+            <input id="entropy" type="range" min="0" max="100" value="50" step="1" aria-describedby="entropy-help">
+            <span class="studio-hint" id="entropy-help">balanced spacing and heights to wild, irregular compositions</span>
+          </div>
+          <div class="studio-control studio-creativity">
+            <label for="creativity">creativity <output id="creativity-value" for="creativity">0%</output></label>
+            <input id="creativity" type="range" min="0" max="100" value="0" step="1" aria-describedby="creativity-help">
+            <span class="studio-hint" id="creativity-help">explore focal peaks, quieter gaps, and balanced contrasts</span>
+          </div>
+          </div>
+          <div class="studio-seed-row">
+            <label for="seed-input">landscape seed <span class="studio-hint">a word or number to return to</span></label>
+            <div class="studio-seed-entry">
+              <input id="seed-input" type="text" maxlength="32" spellcheck="false" autocomplete="off" placeholder="e.g. an alpine morning">
+              <button type="button" id="apply-seed" class="studio-button">draw</button>
+            </div>
+          </div>
+        </fieldset>
+      </details>
+
+      <div class="studio-export">
+        <div class="studio-export-format">
+          <label for="paper-select">download background</label>
+          <select id="paper-select"><option value="transparent">transparent</option><option value="white">white paper</option></select>
+          <span class="studio-hint">PNG · 2400 × 800</span>
+        </div>
+        <div class="studio-actions">
+          <button type="button" class="studio-button" id="share-mountains" disabled>copy landscape link</button>
+          <button type="button" class="studio-button studio-download" id="download-mountains" disabled>download PNG <span aria-hidden="true">↓</span></button>
+        </div>
+      </div>
+      <p class="studio-preview-note">shown on white paper; transparent downloads keep only the pencil marks.</p>
+      <noscript><p>This studio needs JavaScript. You can still <a href="./assets/mountains/home.png" download>download an original mountain sketch</a>.</p></noscript>
+    </section>
+
+    <details class="studio-about">
+      <summary>where do the mountains come from?</summary>
+      <p>every mountain is calculated from scratch: the peaks, the folds in the rock, and the pencil strokes. each new landscape starts with a fresh random seed. the studio draws everything in your browser, without using the existing mountain images.</p>
+      <p>choose a foreground terrain style, then give the middle and distant layers their own styles or let them inherit the foreground. creativity explores focal peaks, quieter gaps, and balanced contrasts while keeping the pencil strokes. save a landscape link to return to that exact drawing and its settings.</p>
+      <p id="studio-sources">your landscape details will appear here when the drawing is ready.</p>
+    </details>
+  </main>
+  <footer><p>© 2026 Cedric Sillaber</p></footer>
+  <script>
+    (() => {
+      const toggle = document.getElementById('theme-toggle');
+      const darkPreference = window.matchMedia('(prefers-color-scheme: dark)');
+      let theme;
+      try { theme = localStorage.getItem('theme'); } catch (_) { /* Theme works without storage. */ }
+      const update = () => {
+        const dark = document.body.classList.contains('dark-mode') || (!document.body.classList.contains('light-mode') && darkPreference.matches);
+        toggle.textContent = dark ? '☀' : '☾';
+        toggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+      };
+      if (theme === 'light-mode' || theme === 'dark-mode') document.body.classList.add(theme);
+      update();
+      darkPreference.addEventListener('change', update);
+      toggle.addEventListener('click', () => {
+        const dark = document.body.classList.contains('dark-mode') || (!document.body.classList.contains('light-mode') && darkPreference.matches);
+        document.body.classList.remove('dark-mode', 'light-mode');
+        theme = dark ? 'light-mode' : 'dark-mode';
+        document.body.classList.add(theme);
+        try { localStorage.setItem('theme', theme); } catch (_) { /* Optional persistence. */ }
+        update();
+      });
+    })();
+  </script>
+</body>
+</html>
