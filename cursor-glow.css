@@ -13,8 +13,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 320px;
-    height: 320px;
+    width: 220px;
+    height: 220px;
     z-index: -1;
     pointer-events: none;
     border-radius: 50%;
