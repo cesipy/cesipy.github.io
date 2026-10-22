@@ -114,7 +114,6 @@ header {
 header img {
   max-width: 300px !important;
   width: 100% !important;
-  background: var(--bg-white);
 }
 
 header p {
