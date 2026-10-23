@@ -406,11 +406,84 @@
     context.restore();
   }
 
-  function drawStrata(context, profile, peak, random, alpha, shadowSide, shading) {
+  function drawShadowFieldV4(context, profile, peak, random, alpha, shadowSide, shading, focal) {
+    const strength = Math.pow(shading / 100, 1.35);
+    const span = shadowSide < 0 ? peak.leftSpan : peak.rightSpan;
+    const height = profile.baseY - peak.peakY;
+    if (span < 12 || height < 25 || strength <= 0) return;
+
+    // A broad shaded face follows the actual skyline. The seeded light side is
+    // shared by all layers; the per-peak pressure keeps the wash from repeating.
+    const terrainWeight = profile.style === 'rolling' ? 0.52 :
+      profile.style === 'spires' ? 0.72 : profile.style === 'massif' ? 1.12 : 1;
+    const pressure = (focal ? 1.12 : between(random, 0.68, 1)) * terrainWeight;
+    const edge = peak.center + shadowSide * span * between(random, 0.8, 0.94);
+    const depth = height * (profile.style === 'rolling' ? 0.48 :
+      profile.style === 'spires' ? 0.64 : 0.82);
+    const gradient = context.createLinearGradient(0, peak.peakY, 0, profile.baseY + 35);
+    gradient.addColorStop(0, 'rgba(41,42,43,0)');
+    gradient.addColorStop(0.16, 'rgba(41,42,43,.8)');
+    gradient.addColorStop(0.48, 'rgba(41,42,43,1)');
+    gradient.addColorStop(0.82, 'rgba(41,42,43,.58)');
+    gradient.addColorStop(1, 'rgba(41,42,43,0)');
+    context.save();
+    context.fillStyle = gradient;
+    context.globalAlpha = clamp(alpha * strength * 0.16 * pressure, 0, 0.18);
+    context.beginPath();
+    context.moveTo(peak.center, profileYAt(profile.points, peak.center) + 2);
+    for (let step = 1; step <= 32; step++) {
+      const x = peak.center + (edge - peak.center) * step / 32;
+      context.lineTo(x, profileYAt(profile.points, x) + 2);
+    }
+    // The lower edge curls back into the slope at both ends. This avoids the
+    // vertical cutoffs that a summit-to-base polygon leaves on the paper.
+    for (let step = 31; step >= 0; step--) {
+      const t = step / 32;
+      const x = peak.center + (edge - peak.center) * t;
+      const feather = Math.pow(Math.sin(Math.PI * t), 0.72);
+      context.lineTo(x, profileYAt(profile.points, x) + 2 + depth * feather);
+    }
+    context.closePath();
+    context.fill();
+    context.restore();
+
+    // Distributed graphite does most of the darkening. Unlike a filled face,
+    // the marks thin out naturally toward the valley and the lit shoulder.
+    const textureWeight = profile.style === 'rolling' ? 0.55 :
+      profile.style === 'plateau' ? 0.7 : 1;
+    const count = Math.round(clamp(span * height / 360, 45, 380) * strength * pressure * textureWeight);
+    for (let mark = 0; mark < count; mark++) {
+      const along = between(random, 0.06, 0.93);
+      const x = peak.center + shadowSide * span * along;
+      const top = profileYAt(profile.points, x);
+      const vertical = random();
+      const y = top + 8 + (profile.baseY - top) * vertical * 0.75;
+      const length = between(random, 8, profile.style === 'rolling' ? 30 : 42);
+      let dx, dy;
+      if (profile.style === 'rolling') {
+        dx = shadowSide * length;
+        dy = (profileYAt(profile.points, x + dx) - top) * 0.55 + length * 0.08;
+      } else if (profile.style === 'plateau') {
+        dx = shadowSide * length * 0.16;
+        dy = length * 0.72;
+      } else {
+        dx = shadowSide * length * between(random, 0.28, 0.72);
+        dy = length * between(random, 0.55, 0.9);
+      }
+      const fade = (1 - vertical * 0.72) * (1 - along * 0.45);
+      pencilLine(context, [
+        {x, y},
+        {x: x + dx * 0.48 + between(random, -2, 2), y: y + dy * 0.48},
+        {x: x + dx, y: y + dy}
+      ], random, alpha * strength * pressure * fade * 0.55, between(random, 0.7, 1.15));
+    }
+  }
+
+  function drawStrata(context, profile, peak, random, alpha, shadowSide, shading, version) {
     const height = Math.max(30, profile.baseY - peak.peakY);
     const extra = Math.max(0, shading - 50) / 50;
     const shadowSpan = shadowSide < 0 ? peak.leftSpan : peak.rightSpan;
-    if (extra > 0) shadowWash(context, [
+    if (extra > 0 && version === '3') shadowWash(context, [
       {x: peak.center, y: peak.peakY},
       {x: peak.center + shadowSide * shadowSpan * 0.8, y: peak.peakY + height * 0.12},
       {x: peak.center + shadowSide * shadowSpan * 0.95, y: profile.baseY + 30},
@@ -447,7 +520,7 @@
     }
   }
 
-  function drawFacets(context, profile, peak, random, alpha, shadowSide, shading) {
+  function drawFacets(context, profile, peak, random, alpha, shadowSide, shading, version) {
     const slender = profile.style === 'spires';
     const massive = profile.style === 'massif';
     const height = Math.max(25, profile.baseY - peak.peakY);
@@ -460,7 +533,7 @@
     });
     const opening = between(random, slender ? 0.2 : 0.5, massive ? 1.05 : 0.88);
     const extra = Math.max(0, shading - 50) / 50;
-    if (extra > 0) {
+    if (extra > 0 && version === '3') {
       const inner = [], outer = [];
       for (let index = 0; index <= 18; index++) {
         const t = index / 18;
@@ -508,10 +581,10 @@
     }
   }
 
-  function drawHillTone(context, profile, peak, random, alpha, shadowSide, extra) {
+  function drawHillTone(context, profile, peak, random, alpha, shadowSide, extra, version) {
     const span = shadowSide < 0 ? peak.leftSpan : peak.rightSpan;
     const height = Math.max(25, profile.baseY - peak.peakY);
-    shadowWash(context, [
+    if (version === '3') shadowWash(context, [
       {x: peak.center, y: peak.peakY},
       {x: peak.center + shadowSide * span * 0.48, y: peak.peakY + height * 0.32},
       {x: peak.center + shadowSide * span * 0.92, y: profile.baseY + 25},
@@ -532,7 +605,7 @@
     }
   }
 
-  function drawTerrainDetails(context, profile, seed, alpha, shadowSide, shading) {
+  function drawTerrainDetails(context, profile, seed, alpha, shadowSide, shading, version) {
     if (shading === 0) return;
     const extra = Math.max(0, shading - 50) / 50;
     // The upper half deliberately opens a much stronger contrast range.
@@ -552,22 +625,26 @@
       const random = randomSource(seed + '|faces-v3|' + profile.depth + '|' + index);
       const prominent = index === focal || random() < (profile.depth === 0 ? 0.48 : 0.3) + extra * 0.3;
       const detail = alpha * (profile.depth === 0 ? 1 : profile.depth === 1 ? 0.67 : 0.4) * pressure;
+      if (version === '4') {
+        const toneRandom = randomSource(seed + '|shade-v4|' + profile.depth + '|' + index);
+        drawShadowFieldV4(context, profile, peak, toneRandom, alpha, shadowSide, shading, index === focal);
+      }
       if (profile.style === 'rolling') {
         // Rounded hills stay open and soft, with no sharp rock-face skeleton.
         if (prominent || random() < 0.55) slopeContour(context, profile, peak, random, detail * 0.38, shadowSide);
         if (prominent && profile.depth === 0) slopeContour(context, profile, peak, random, detail * 0.12, -shadowSide);
-        if (prominent && extra > 0) drawHillTone(context, profile, peak, random, detail, shadowSide, extra);
+        if (prominent && extra > 0) drawHillTone(context, profile, peak, random, detail, shadowSide, extra, version);
       } else if (profile.style === 'plateau') {
-        if (prominent) drawStrata(context, profile, peak, random, detail, shadowSide, shading);
+        if (prominent) drawStrata(context, profile, peak, random, detail, shadowSide, shading, version);
       } else {
-        if (prominent) drawFacets(context, profile, peak, random, detail, shadowSide, shading);
+        if (prominent) drawFacets(context, profile, peak, random, detail, shadowSide, shading, version);
         if (random() < 0.6) slopeContour(context, profile, peak, random, detail * 0.18, shadowSide);
       }
     });
     context.restore();
   }
 
-  function drawLayer(context, profile, layout, viewport, seed, graphite, depth, shadowSide, shading) {
+  function drawLayer(context, profile, layout, viewport, seed, graphite, depth, shadowSide, shading, version) {
     const random = randomSource(`${seed}|marks|${depth}`);
     const strength = graphite / 100;
     const depthFactor = strength * (depth === 0 ? 1 : depth === 1 ? 0.46 : 0.29);
@@ -599,7 +676,7 @@
         });
       }
 
-      drawTerrainDetails(context, profile, seed, depthFactor, shadowSide, shading);
+      drawTerrainDetails(context, profile, seed, depthFactor, shadowSide, shading, version);
 
       const grainCount = depth === 0 ? 105 : depth === 1 ? 62 : 38;
       context.globalAlpha = depthFactor * 0.11 * Math.min(2, shading / 50);
@@ -632,6 +709,7 @@
       if (!window.MountainTerrainV2) throw new Error('The saved drawing renderer did not load. Reload to try again.');
       return window.MountainTerrainV2.draw(canvas, state);
     }
+    const version = String(state?.v) === '3' ? '3' : '4';
     if (!canvas || typeof canvas.getContext !== "function") return null;
     const width = canvas.width;
     const height = canvas.height;
@@ -693,7 +771,7 @@
     const shadowSide = randomSource(seed + '|lighting-v3')() < 0.5 ? -1 : 1;
     profiles.forEach((layer, index) => {
       if (index > 0) eraseBehind(terrainContext, layer.profile, layer.layout, viewport);
-      drawLayer(terrainContext, layer.profile, layer.layout, viewport, seed, graphite, layer.profile.depth, shadowSide, shading);
+      drawLayer(terrainContext, layer.profile, layer.layout, viewport, seed, graphite, layer.profile.depth, shadowSide, shading, version);
     });
 
     mainContext.setTransform(1, 0, 0, 1, 0, 0);
@@ -712,7 +790,7 @@
       style: layer.profile.style
     }));
     return {
-      version: '3',
+      version,
       lightDirection: shadowSide === 1 ? 'upper-left' : 'upper-right',
       style,
       peakCount: foregroundProfile.peaks.length,

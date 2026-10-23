@@ -21,7 +21,7 @@
   const defaults = {
     ridge: 'auto', midRidge: 'same', farRidge: 'same', layers: 2, graphite: 65, spacing: 50,
     sharpness: 50, bumpiness: 50, entropy: 50, creativity: 0, shading: 50, character: 50,
-    paper: 'transparent', v: '3'
+    paper: 'transparent', v: '4'
   };
   const characterKeys = ['sharpness', 'bumpiness', 'entropy', 'creativity', 'spacing', 'graphite', 'shading'];
   const history = [];
@@ -78,19 +78,19 @@
 
   function readHash(fallback) {
     const params = new URLSearchParams(location.hash.slice(1));
-    const hasParams = params.toString() !== '';
+    const hasHash = location.hash.slice(1) !== '';
     let version;
     if (params.has('v')) {
       const requestedVersion = params.get('v');
-      if (requestedVersion === '2' || requestedVersion === '3') {
+      if (requestedVersion === '2' || requestedVersion === '3' || requestedVersion === '4') {
         version = requestedVersion;
         versionNotice = '';
       } else {
-        version = '3';
-        versionNotice = 'Renderer version “' + (requestedVersion || 'empty') + '” is unsupported; showing version 3.';
+        version = '4';
+        versionNotice = 'Renderer version “' + (requestedVersion || 'empty') + '” is unsupported; showing version 4.';
       }
     } else {
-      version = params.toString() ? '2' : '3';
+      version = params.toString() ? '2' : '4';
       versionNotice = '';
     }
     const parsed = {
@@ -110,8 +110,8 @@
       paper: ['transparent', 'white'].includes(params.get('paper')) ? params.get('paper') : fallback.paper
     };
     parsed.character = params.has('character') ? bounded(params.get('character'), 0, 100, deriveCharacter(parsed)) : deriveCharacter(parsed);
-    if (!hasParams) {
-      return { ...parsed, ...characterSettings(50), character: 50, v: '3' };
+    if (!hasHash) {
+      return { ...parsed, ...characterSettings(50), character: 50, v: '4' };
     }
     return parsed;
   }
@@ -125,7 +125,11 @@
     const message = $('renderer-version-message');
     const updateButton = $('update-renderer');
     if (state.v === '2') {
-      message.textContent = 'This saved landscape uses its original drawing engine. Character and shading controls require version 3. ';
+      message.textContent = 'This saved landscape uses its original drawing engine. Character and shading controls are available after upgrading to version 4. ';
+      updateButton.hidden = false;
+      notice.hidden = false;
+    } else if (state.v === '3') {
+      message.textContent = 'This saved landscape uses renderer version 3. Use the updated drawing to switch to version 4. ';
       updateButton.hidden = false;
       notice.hidden = false;
     } else if (versionNotice) {
@@ -325,15 +329,16 @@
       commitRange();
       remember(state);
       versionNotice = '';
-      state = { ...readControls(), seed: newSeed(), v: '3' };
+      state = { ...readControls(), seed: newSeed(), v: '4' };
       syncControls();
       render();
     });
     $('update-renderer').addEventListener('click', () => {
-      if (state.v !== '2') return;
+      if (state.v !== '2' && state.v !== '3') return;
       commitRange();
       remember(state);
-      state = { ...state, v: '3', shading: 50 };
+      versionNotice = '';
+      state = { ...state, v: '4', shading: state.v === '2' ? 50 : state.shading };
       syncControls();
       render();
     });
