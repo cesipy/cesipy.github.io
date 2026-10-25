@@ -21,7 +21,7 @@
 .studio-button span { margin-left: .65rem; }
 .studio-download { border-color: var(--accent-color); }
 .studio-button:disabled { opacity: .4; cursor: default; }
-.studio-page :is(button, select, input, summary, a):focus-visible { outline: 2px solid var(--accent-color); outline-offset: 4px; }
+.studio-page :is(button, select, input, textarea, summary, a):focus-visible { outline: 2px solid var(--accent-color); outline-offset: 4px; }
 #studio-status { font-size: .78rem; color: var(--text-secondary); margin: 0; max-width: 100%; overflow-wrap: anywhere; }
 #studio-controls { margin: 2.5rem 0 0; padding: 1.35rem 0 0; border: 0; border-top: 1px solid var(--border-light); min-width: 0; }
 #studio-controls legend { padding: 0 1rem 0 0; font-size: .85rem; color: var(--text-secondary); }
@@ -51,6 +51,21 @@
 .studio-export-format { max-width: 250px; flex: 1 1 200px; }
 .studio-export-format .studio-hint { margin-top: .45rem; }
 .studio-preview-note { color: var(--text-secondary); font-size: .75rem; margin: .85rem 0 0; }
+.studio-photo-lab { margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border-light); }
+.studio-photo-lab > summary { width: fit-content; color: var(--text-primary); cursor: pointer; font-size: .9rem; font-weight: 600; }
+.studio-photo-lab > summary span { margin-left: .4rem; color: var(--text-secondary); font-size: .72rem; font-weight: 400; }
+.studio-photo-content { max-width: 760px; padding: .5rem 0 0; }
+.studio-photo-content p { color: var(--text-secondary); font-size: .8rem; }
+.studio-photo-content > label { display: block; margin: 1rem 0 .4rem; font-size: .85rem; }
+.studio-photo-content > select { max-width: 100%; }
+.studio-photo-content > .studio-hint { margin-top: .45rem; }
+.studio-photo-content textarea { box-sizing: border-box; width: 100%; min-height: 5rem; padding: .7rem .8rem; border: 1px solid var(--border-light); border-radius: 3px; background: var(--bg-white); color: var(--text-primary); resize: vertical; font: inherit; font-size: .85rem; }
+.studio-photo-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .7rem 1rem; margin-top: .8rem; }
+.studio-photo-actions p { margin: 0; }
+.studio-photo-result { margin: 1.4rem 0 0; }
+.studio-photo-result img { display: block; width: 100%; height: auto; border: 1px solid var(--border-light); border-radius: 3px; }
+.studio-photo-result figcaption { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .7rem; margin-top: .7rem; color: var(--text-secondary); font-size: .75rem; }
+.studio-photo-result .studio-button { display: inline-block; text-decoration: none; }
 .studio-about { margin-top: 2.5rem; color: var(--text-secondary); font-size: .85rem; }
 .studio-about summary { cursor: pointer; width: fit-content; }
 .studio-about p { max-width: 720px; }

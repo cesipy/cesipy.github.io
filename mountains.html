@@ -11,8 +11,11 @@
   <script src="./mountain-terrain-v2.js" defer></script>
   <script src="./mountain-terrain.js" defer></script>
   <script src="./mountains.js" defer></script>
+  <script src="./mountain-photo.js" defer></script>
   <link rel="stylesheet" href="/cursor-glow.css">
   <script defer src="/cursor-glow.js"></script>
+  <link rel="stylesheet" href="/mountain-background.css">
+  <script defer src="/mountain-background.js"></script>
 </head>
 <body class="studio-page">
   <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">☾</button>
@@ -176,6 +179,28 @@
         </div>
       </div>
       <p class="studio-preview-note">shown on white paper; transparent downloads keep only the pencil marks.</p>
+      <details class="studio-photo-lab">
+        <summary>turn this sketch into a real landscape <span>local model</span></summary>
+        <div class="studio-photo-content">
+          <p>A separate photo made from the current pencil drawing. This runs on your Mac; <a href="https://github.com/cesipy/cesipy.github.io#local-sketch-to-photo">set up the local model</a> before generating.</p>
+          <label for="photo-engine">photo model</label>
+          <select id="photo-engine">
+            <option value="klein">FLUX.2 Klein 4B · MLX 4-bit</option>
+            <option value="controlnet">SD 1.5 · line-art ControlNet</option>
+          </select>
+          <span class="studio-hint" id="photo-engine-hint">More photographic interpretation; the exact ridge shapes can change. The quantized model is about 4.6 GB.</span>
+          <label for="photo-prompt">scene details</label>
+          <textarea id="photo-prompt" rows="2" maxlength="250" placeholder="e.g. snow-dusted rock, early morning light">snow-dusted mountain range, clear morning light, natural colors</textarea>
+          <div class="studio-photo-actions">
+            <button type="button" class="studio-button studio-primary" id="photo-generate" disabled>make real landscape</button>
+            <p id="photo-status" role="status" aria-live="polite">start the local model server to use this.</p>
+          </div>
+          <figure class="studio-photo-result" id="photo-result" hidden>
+            <img id="photo-image" alt="Realistic landscape generated from the pencil sketch">
+            <figcaption><span id="photo-caption"></span><a class="studio-button" id="photo-download" download>download photo ↓</a></figcaption>
+          </figure>
+        </div>
+      </details>
       <noscript><p>This studio needs JavaScript. You can still <a href="./assets/mountains/home.png" download>download an original mountain sketch</a>.</p></noscript>
     </section>
 

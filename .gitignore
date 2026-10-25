@@ -1,2 +1,5 @@
 *.DS_Store
+.venv-photo/
+.venv-klein/
+__pycache__/
 

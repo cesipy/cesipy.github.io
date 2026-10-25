@@ -320,6 +320,12 @@
     }
   }
 
+  // Optional local photo generation needs the exact current geometry without
+  // changing the shared URL or the visible pencil drawing.
+  window.MountainStudio = Object.freeze({
+    snapshot: () => ready ? { ...state } : null
+  });
+
   try {
     state = readHash({ ...defaults, seed: newSeed() });
     initialState = { ...state };
