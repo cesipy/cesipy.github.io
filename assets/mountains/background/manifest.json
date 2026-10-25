@@ -1,0 +1,715 @@
+{
+  "generatedBy": "scripts/generate-background-mountains.cjs",
+  "renderer": {
+    "file": "mountain-terrain.js",
+    "api": "MountainTerrain.draw(canvas, state)",
+    "version": 4,
+    "sha256": "48e751231236219750cabb8277df3e4f025a5e0790aecb4afaf35bd1d26deeaf"
+  },
+  "rendering": {
+    "sourceCanvas": {
+      "width": 2400,
+      "height": 800
+    },
+    "output": {
+      "width": 720,
+      "height": 240,
+      "format": "PNG"
+    },
+    "resampling": "Canvas 2D drawImage, imageSmoothingEnabled=true, imageSmoothingQuality=high",
+    "crop": "none; full renderer canvas retained",
+    "paper": "transparent",
+    "outlinePass": {
+      "method": "second transparent MountainTerrain.draw pass with identical state except shading=0, composited over the shaded source before downsampling; a temporary CanvasRenderingContext2D.stroke wrapper scales lineWidth and is restored in finally",
+      "strokeWidthMultiplier": 4,
+      "transparentBackground": true
+    },
+    "alphaPostprocessing": {
+      "method": "alpha-only gamma curve: alpha = round(255 * (alpha / 255) ^ gamma)",
+      "gamma": 0.6,
+      "preservesTransparentPixels": true
+    }
+  },
+  "assets": [
+    {
+      "filename": "ridge-01.png",
+      "state": {
+        "midRidge": "same",
+        "farRidge": "same",
+        "paper": "transparent",
+        "v": "4",
+        "seed": "ridge-a-001",
+        "ridge": "alpine",
+        "layers": 1,
+        "graphite": 99,
+        "shading": 48,
+        "sharpness": 72,
+        "bumpiness": 42,
+        "entropy": 45,
+        "creativity": 8,
+        "spacing": 48,
+        "filename": "ridge-01.png"
+      },
+      "drawResult": {
+        "version": "4",
+        "lightDirection": "upper-left",
+        "style": "alpine",
+        "peakCount": 4,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "alpine"
+          }
+        ],
+        "foregroundFingerprint": "lcncfo"
+      },
+      "outlineDrawResult": {
+        "version": "4",
+        "lightDirection": "upper-left",
+        "style": "alpine",
+        "peakCount": 4,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "alpine"
+          }
+        ],
+        "foregroundFingerprint": "lcncfo"
+      },
+      "alphaStats": {
+        "nonTransparentPixels": 12813,
+        "meanAlpha": 59,
+        "maxAlpha": 228
+      },
+      "bytes": 37486,
+      "sha256": "1bfb7d4a42f3a90ae2a9960bf34a56762ba7269d7b87457ccd6323c65d2d11b4"
+    },
+    {
+      "filename": "ridge-02.png",
+      "state": {
+        "midRidge": "same",
+        "farRidge": "same",
+        "paper": "transparent",
+        "v": "4",
+        "seed": "ridge-a-011",
+        "ridge": "alpine",
+        "layers": 1,
+        "graphite": 97,
+        "shading": 52,
+        "sharpness": 80,
+        "bumpiness": 48,
+        "entropy": 45,
+        "creativity": 12,
+        "spacing": 44,
+        "filename": "ridge-02.png"
+      },
+      "drawResult": {
+        "version": "4",
+        "lightDirection": "upper-right",
+        "style": "alpine",
+        "peakCount": 3,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "alpine"
+          }
+        ],
+        "foregroundFingerprint": "1jyceg8"
+      },
+      "outlineDrawResult": {
+        "version": "4",
+        "lightDirection": "upper-right",
+        "style": "alpine",
+        "peakCount": 3,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "alpine"
+          }
+        ],
+        "foregroundFingerprint": "1jyceg8"
+      },
+      "alphaStats": {
+        "nonTransparentPixels": 13676,
+        "meanAlpha": 57,
+        "maxAlpha": 228
+      },
+      "bytes": 38829,
+      "sha256": "ae9804e9d74d4f5b08cae524b995ee6bbe14f9ea27a2ecf93e87d353f7c9c5db"
+    },
+    {
+      "filename": "ridge-03.png",
+      "state": {
+        "midRidge": "same",
+        "farRidge": "same",
+        "paper": "transparent",
+        "v": "4",
+        "seed": "ridge-a-013",
+        "ridge": "alpine",
+        "layers": 1,
+        "graphite": 100,
+        "shading": 44,
+        "sharpness": 78,
+        "bumpiness": 55,
+        "entropy": 45,
+        "creativity": 10,
+        "spacing": 50,
+        "filename": "ridge-03.png"
+      },
+      "drawResult": {
+        "version": "4",
+        "lightDirection": "upper-left",
+        "style": "alpine",
+        "peakCount": 3,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "alpine"
+          }
+        ],
+        "foregroundFingerprint": "1o7qe2t"
+      },
+      "outlineDrawResult": {
+        "version": "4",
+        "lightDirection": "upper-left",
+        "style": "alpine",
+        "peakCount": 3,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "alpine"
+          }
+        ],
+        "foregroundFingerprint": "1o7qe2t"
+      },
+      "alphaStats": {
+        "nonTransparentPixels": 15254,
+        "meanAlpha": 54,
+        "maxAlpha": 228
+      },
+      "bytes": 37219,
+      "sha256": "93568607ec45c64ff6b211ad06595bc5833a67c20f59644a0fd894999ca8ce6e"
+    },
+    {
+      "filename": "ridge-04.png",
+      "state": {
+        "midRidge": "same",
+        "farRidge": "same",
+        "paper": "transparent",
+        "v": "4",
+        "seed": "ridge-a-020",
+        "ridge": "alpine",
+        "layers": 1,
+        "graphite": 96,
+        "shading": 47,
+        "sharpness": 64,
+        "bumpiness": 45,
+        "entropy": 45,
+        "creativity": 15,
+        "spacing": 52,
+        "filename": "ridge-04.png"
+      },
+      "drawResult": {
+        "version": "4",
+        "lightDirection": "upper-right",
+        "style": "alpine",
+        "peakCount": 3,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "alpine"
+          }
+        ],
+        "foregroundFingerprint": "kdt3dx"
+      },
+      "outlineDrawResult": {
+        "version": "4",
+        "lightDirection": "upper-right",
+        "style": "alpine",
+        "peakCount": 3,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "alpine"
+          }
+        ],
+        "foregroundFingerprint": "kdt3dx"
+      },
+      "alphaStats": {
+        "nonTransparentPixels": 12773,
+        "meanAlpha": 58,
+        "maxAlpha": 225
+      },
+      "bytes": 36822,
+      "sha256": "659594a41c4bada2d4c0acd6c8dde5aca864abdc10ef060d19ad9333738b1192"
+    },
+    {
+      "filename": "ridge-05.png",
+      "state": {
+        "midRidge": "massif",
+        "farRidge": "same",
+        "paper": "transparent",
+        "v": "4",
+        "seed": "ridge-a-021",
+        "ridge": "alpine",
+        "layers": 2,
+        "graphite": 100,
+        "shading": 58,
+        "sharpness": 75,
+        "bumpiness": 54,
+        "entropy": 45,
+        "creativity": 20,
+        "spacing": 42,
+        "filename": "ridge-05.png"
+      },
+      "drawResult": {
+        "version": "4",
+        "lightDirection": "upper-left",
+        "style": "alpine",
+        "peakCount": 3,
+        "layers": [
+          {
+            "source": "procedural-near",
+            "depth": 1,
+            "style": "massif"
+          },
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "alpine"
+          }
+        ],
+        "foregroundFingerprint": "1smtz8v"
+      },
+      "outlineDrawResult": {
+        "version": "4",
+        "lightDirection": "upper-left",
+        "style": "alpine",
+        "peakCount": 3,
+        "layers": [
+          {
+            "source": "procedural-near",
+            "depth": 1,
+            "style": "massif"
+          },
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "alpine"
+          }
+        ],
+        "foregroundFingerprint": "1smtz8v"
+      },
+      "alphaStats": {
+        "nonTransparentPixels": 16636,
+        "meanAlpha": 65,
+        "maxAlpha": 231
+      },
+      "bytes": 54464,
+      "sha256": "f3d695eab9870ed5e6fbcc73e1bb17f9bfa0665208b955704e57a8620a0e0fc0"
+    },
+    {
+      "filename": "ridge-06.png",
+      "state": {
+        "midRidge": "same",
+        "farRidge": "same",
+        "paper": "transparent",
+        "v": "4",
+        "seed": "ridge-m-001",
+        "ridge": "massif",
+        "layers": 1,
+        "graphite": 100,
+        "shading": 61,
+        "sharpness": 62,
+        "bumpiness": 48,
+        "entropy": 45,
+        "creativity": 12,
+        "spacing": 56,
+        "filename": "ridge-06.png"
+      },
+      "drawResult": {
+        "version": "4",
+        "lightDirection": "upper-right",
+        "style": "massif",
+        "peakCount": 2,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "massif"
+          }
+        ],
+        "foregroundFingerprint": "ud3l7a"
+      },
+      "outlineDrawResult": {
+        "version": "4",
+        "lightDirection": "upper-right",
+        "style": "massif",
+        "peakCount": 2,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "massif"
+          }
+        ],
+        "foregroundFingerprint": "ud3l7a"
+      },
+      "alphaStats": {
+        "nonTransparentPixels": 15593,
+        "meanAlpha": 65,
+        "maxAlpha": 230
+      },
+      "bytes": 42153,
+      "sha256": "6b21531d2ab9dcd898a11cf4a949b45edc0f2c9c9b5bfc52c6ab0d294fa6099c"
+    },
+    {
+      "filename": "ridge-07.png",
+      "state": {
+        "midRidge": "same",
+        "farRidge": "same",
+        "paper": "transparent",
+        "v": "4",
+        "seed": "ridge-m-002",
+        "ridge": "massif",
+        "layers": 1,
+        "graphite": 98,
+        "shading": 55,
+        "sharpness": 68,
+        "bumpiness": 42,
+        "entropy": 45,
+        "creativity": 22,
+        "spacing": 44,
+        "filename": "ridge-07.png"
+      },
+      "drawResult": {
+        "version": "4",
+        "lightDirection": "upper-right",
+        "style": "massif",
+        "peakCount": 3,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "massif"
+          }
+        ],
+        "foregroundFingerprint": "l467v7"
+      },
+      "outlineDrawResult": {
+        "version": "4",
+        "lightDirection": "upper-right",
+        "style": "massif",
+        "peakCount": 3,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "massif"
+          }
+        ],
+        "foregroundFingerprint": "l467v7"
+      },
+      "alphaStats": {
+        "nonTransparentPixels": 15296,
+        "meanAlpha": 58,
+        "maxAlpha": 228
+      },
+      "bytes": 40038,
+      "sha256": "25819af4fc330110b4fc4c1568b474e456455bf8238607d2e49e8cdd204fc314"
+    },
+    {
+      "filename": "ridge-08.png",
+      "state": {
+        "midRidge": "alpine",
+        "farRidge": "same",
+        "paper": "transparent",
+        "v": "4",
+        "seed": "ridge-m-010",
+        "ridge": "massif",
+        "layers": 2,
+        "graphite": 97,
+        "shading": 64,
+        "sharpness": 70,
+        "bumpiness": 50,
+        "entropy": 45,
+        "creativity": 18,
+        "spacing": 58,
+        "filename": "ridge-08.png"
+      },
+      "drawResult": {
+        "version": "4",
+        "lightDirection": "upper-right",
+        "style": "massif",
+        "peakCount": 3,
+        "layers": [
+          {
+            "source": "procedural-near",
+            "depth": 1,
+            "style": "alpine"
+          },
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "massif"
+          }
+        ],
+        "foregroundFingerprint": "gh5bpz"
+      },
+      "outlineDrawResult": {
+        "version": "4",
+        "lightDirection": "upper-right",
+        "style": "massif",
+        "peakCount": 3,
+        "layers": [
+          {
+            "source": "procedural-near",
+            "depth": 1,
+            "style": "alpine"
+          },
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "massif"
+          }
+        ],
+        "foregroundFingerprint": "gh5bpz"
+      },
+      "alphaStats": {
+        "nonTransparentPixels": 20780,
+        "meanAlpha": 63,
+        "maxAlpha": 228
+      },
+      "bytes": 64901,
+      "sha256": "550fc55f71e1c00b48bab674464e6b5af5d46c240fe7149896807111dd28a812"
+    },
+    {
+      "filename": "ridge-09.png",
+      "state": {
+        "midRidge": "same",
+        "farRidge": "same",
+        "paper": "transparent",
+        "v": "4",
+        "seed": "ridge-m-015",
+        "ridge": "massif",
+        "layers": 1,
+        "graphite": 99,
+        "shading": 41,
+        "sharpness": 84,
+        "bumpiness": 38,
+        "entropy": 45,
+        "creativity": 5,
+        "spacing": 42,
+        "filename": "ridge-09.png"
+      },
+      "drawResult": {
+        "version": "4",
+        "lightDirection": "upper-left",
+        "style": "massif",
+        "peakCount": 2,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "massif"
+          }
+        ],
+        "foregroundFingerprint": "1t7mlp5"
+      },
+      "outlineDrawResult": {
+        "version": "4",
+        "lightDirection": "upper-left",
+        "style": "massif",
+        "peakCount": 2,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "massif"
+          }
+        ],
+        "foregroundFingerprint": "1t7mlp5"
+      },
+      "alphaStats": {
+        "nonTransparentPixels": 18927,
+        "meanAlpha": 49,
+        "maxAlpha": 228
+      },
+      "bytes": 39749,
+      "sha256": "67b6178c978d3775e8decd07c1675c29520d0bccbbbc6b1c8def57fa10652bab"
+    },
+    {
+      "filename": "ridge-10.png",
+      "state": {
+        "midRidge": "same",
+        "farRidge": "same",
+        "paper": "transparent",
+        "v": "4",
+        "seed": "ridge-a-025",
+        "ridge": "alpine",
+        "layers": 1,
+        "graphite": 97,
+        "shading": 65,
+        "sharpness": 55,
+        "bumpiness": 60,
+        "entropy": 45,
+        "creativity": 25,
+        "spacing": 46,
+        "filename": "ridge-10.png"
+      },
+      "drawResult": {
+        "version": "4",
+        "lightDirection": "upper-right",
+        "style": "alpine",
+        "peakCount": 3,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "alpine"
+          }
+        ],
+        "foregroundFingerprint": "7xjlmq"
+      },
+      "outlineDrawResult": {
+        "version": "4",
+        "lightDirection": "upper-right",
+        "style": "alpine",
+        "peakCount": 3,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "alpine"
+          }
+        ],
+        "foregroundFingerprint": "7xjlmq"
+      },
+      "alphaStats": {
+        "nonTransparentPixels": 14954,
+        "meanAlpha": 75,
+        "maxAlpha": 227
+      },
+      "bytes": 48780,
+      "sha256": "80d5f353aed8c48e859c6dfc50018b12eac19e9bdeed02050a1246820458d185"
+    },
+    {
+      "filename": "ridge-11.png",
+      "state": {
+        "midRidge": "same",
+        "farRidge": "same",
+        "paper": "transparent",
+        "v": "4",
+        "seed": "ridge-j-003",
+        "ridge": "jagged",
+        "layers": 1,
+        "graphite": 100,
+        "shading": 48,
+        "sharpness": 80,
+        "bumpiness": 52,
+        "entropy": 45,
+        "creativity": 18,
+        "spacing": 52,
+        "filename": "ridge-11.png"
+      },
+      "drawResult": {
+        "version": "4",
+        "lightDirection": "upper-right",
+        "style": "jagged",
+        "peakCount": 5,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "jagged"
+          }
+        ],
+        "foregroundFingerprint": "mv68je"
+      },
+      "outlineDrawResult": {
+        "version": "4",
+        "lightDirection": "upper-right",
+        "style": "jagged",
+        "peakCount": 5,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "jagged"
+          }
+        ],
+        "foregroundFingerprint": "mv68je"
+      },
+      "alphaStats": {
+        "nonTransparentPixels": 11263,
+        "meanAlpha": 62,
+        "maxAlpha": 229
+      },
+      "bytes": 34422,
+      "sha256": "dc295c935c4c748a825a3d1067b5fd837ebbe41e935e3f5499a2aad6867c75e0"
+    },
+    {
+      "filename": "ridge-12.png",
+      "state": {
+        "midRidge": "same",
+        "farRidge": "same",
+        "paper": "transparent",
+        "v": "4",
+        "seed": "ridge-v-001",
+        "ridge": "valley",
+        "layers": 1,
+        "graphite": 96,
+        "shading": 55,
+        "sharpness": 70,
+        "bumpiness": 50,
+        "entropy": 45,
+        "creativity": 18,
+        "spacing": 50,
+        "filename": "ridge-12.png"
+      },
+      "drawResult": {
+        "version": "4",
+        "lightDirection": "upper-right",
+        "style": "valley",
+        "peakCount": 4,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "valley"
+          }
+        ],
+        "foregroundFingerprint": "t89bvy"
+      },
+      "outlineDrawResult": {
+        "version": "4",
+        "lightDirection": "upper-right",
+        "style": "valley",
+        "peakCount": 4,
+        "layers": [
+          {
+            "source": "procedural-foreground",
+            "depth": 0,
+            "style": "valley"
+          }
+        ],
+        "foregroundFingerprint": "t89bvy"
+      },
+      "alphaStats": {
+        "nonTransparentPixels": 15424,
+        "meanAlpha": 58,
+        "maxAlpha": 226
+      },
+      "bytes": 42188,
+      "sha256": "fd20ea785c23aa61bd22e6ded0225e65f7925ca8b3fd3427798fa4bb50a024e5"
+    }
+  ]
+}
